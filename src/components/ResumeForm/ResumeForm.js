@@ -67,7 +67,7 @@ function ResumeForm() {
                   color="primary"
                   disabled={isSubmitting}
                 >
-                  제출
+                  저장
                 </Button>
               </Box>
             </Form>

@@ -12,7 +12,6 @@ function PersonalInfo() {
         name="introduction"
         as={TextField}
         fullWidth
-        multiline
         rows={4}
         label="간략한 소개"
         variant="outlined"
