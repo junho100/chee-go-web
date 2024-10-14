@@ -58,7 +58,10 @@ function ResumeForm() {
               githubUrl: project.github_url || "",
             }))
           : [],
-        skills: Array.isArray(response.data.skills) ? response.data.skills : [],
+        skills: Array.isArray(response.data.keywords)
+          ? response.data.keywords
+          : [],
+        skillInput: "", // 새로운 스킬 입력을 위한 필드
         activities: Array.isArray(response.data.activities)
           ? response.data.activities.map((activity) => ({
               id: activity.id,
