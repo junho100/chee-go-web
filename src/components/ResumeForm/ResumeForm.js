@@ -1,5 +1,5 @@
-import React from "react";
-import { Formik, Form } from "formik";
+import React, { useEffect, useState, useRef } from "react";
+import { Formik, Form, useFormikContext } from "formik";
 import * as Yup from "yup";
 import { Container, Paper, Typography, Button, Box } from "@mui/material";
 import PersonalInfo from "./PersonalInfo";
@@ -9,36 +9,110 @@ import Skills from "./Skills";
 import Activities from "./Activities";
 import Certifications from "./Certifications";
 import WorkExperience from "./WorkExperience";
+import api from "../../utils/api";
 
 const validationSchema = Yup.object().shape({
   // 여기에 유효성 검사 규칙을 추가합니다
 });
 
-const initialValues = {
-  introduction: "",
-  education: [{ schoolName: "", major: "", period: "" }],
-  projects: [{ name: "", period: "", description: "", githubUrl: "" }],
-  skills: [],
-  activities: [{ name: "", period: "", details: "" }],
-  certifications: [{ name: "", organization: "", date: "" }],
-  workExperience: [
-    {
-      companyName: "",
-      department: "",
-      position: "",
-      jobTitle: "",
-      tasks: [{ title: "", period: "", details: "" }],
-    },
-  ],
-  githubUrl: "",
-  blogUrl: "",
-};
+// 새로운 컴포넌트: LocalStorageUpdater
+function LocalStorageUpdater() {
+  const { values } = useFormikContext();
+
+  useEffect(() => {
+    localStorage.setItem("resumeData", JSON.stringify(values));
+  }, [values]);
+
+  return null;
+}
 
 function ResumeForm() {
+  const [initialValues, setInitialValues] = useState(null);
+  const formikRef = useRef();
+
+  const fetchResumeData = async () => {
+    try {
+      const response = await api.get("/resumes");
+      const newValues = {
+        introduction: response.data.introduction || "",
+        githubUrl: response.data.github_url || "",
+        blogUrl: response.data.blog_url || "",
+        educations: Array.isArray(response.data.educations)
+          ? response.data.educations.map((edu) => ({
+              id: edu.id,
+              schoolName: edu.school_name || "",
+              majorName: edu.major_name || "",
+              startDate: edu.start_date ? edu.start_date.split("T")[0] : "",
+              endDate: edu.end_date ? edu.end_date.split("T")[0] : "",
+            }))
+          : [],
+        projects: Array.isArray(response.data.projects)
+          ? response.data.projects
+          : [{ name: "", period: "", description: "", githubUrl: "" }],
+        skills: Array.isArray(response.data.skills) ? response.data.skills : [],
+        activities: Array.isArray(response.data.activities)
+          ? response.data.activities
+          : [{ name: "", period: "", details: "" }],
+        certifications: Array.isArray(response.data.certifications)
+          ? response.data.certifications
+          : [{ name: "", organization: "", date: "" }],
+        workExperience: Array.isArray(response.data.work_experience)
+          ? response.data.work_experience
+          : [
+              {
+                companyName: "",
+                department: "",
+                position: "",
+                jobTitle: "",
+                tasks: [{ title: "", period: "", details: "" }],
+              },
+            ],
+      };
+      return newValues;
+    } catch (error) {
+      console.error("이력서 데이터를 가져오는 데 실패했습니다:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const loadInitialData = async () => {
+      const savedValues = localStorage.getItem("resumeData");
+      if (savedValues) {
+        setInitialValues(JSON.parse(savedValues));
+      } else {
+        const newValues = await fetchResumeData();
+        if (newValues) {
+          setInitialValues(newValues);
+          localStorage.setItem("resumeData", JSON.stringify(newValues));
+        }
+      }
+    };
+
+    loadInitialData();
+  }, []);
+
   const handleSubmit = (values, { setSubmitting }) => {
     console.log(values);
     setSubmitting(false);
   };
+
+  const handleLoadResume = async () => {
+    const isConfirmed = window.confirm(
+      "기존에 작성한 이력을 덮어씁니다. 실행하겠습니까?"
+    );
+    if (isConfirmed) {
+      const newValues = await fetchResumeData();
+      if (newValues && formikRef.current) {
+        formikRef.current.setValues(newValues);
+        localStorage.setItem("resumeData", JSON.stringify(newValues));
+      }
+    }
+  };
+
+  if (!initialValues) {
+    return <div>로딩 중...</div>;
+  }
 
   return (
     <Container maxWidth="md">
@@ -46,13 +120,21 @@ function ResumeForm() {
         <Typography variant="h4" gutterBottom>
           이력서 등록
         </Typography>
+        <Box mb={2}>
+          <Button variant="outlined" onClick={handleLoadResume}>
+            저장된 이력서 불러오기
+          </Button>
+        </Box>
         <Formik
+          innerRef={formikRef}
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
+          enableReinitialize
         >
           {({ isSubmitting }) => (
             <Form>
+              <LocalStorageUpdater />
               <PersonalInfo />
               <Education />
               <Projects />
