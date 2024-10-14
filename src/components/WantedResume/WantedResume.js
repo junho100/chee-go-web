@@ -10,16 +10,53 @@ const mockData = {
     {
       company: "소프트스퀘어드",
       position: "Project Technical Lead",
-      period: "2023년 6월 - 현재",
-      description:
-        "- 클라우드 인프라 구축 및 최적화 프로젝트 리드\n- 대규모 트래픽 처리 시스템 설계 및 구현\n- 팀 생산성 30% 향상을 위한 개발 프로세스 개선",
+      startDate: "2023년 6월",
+      endDate: "현재",
+      achievements: [
+        {
+          name: "클라우드 인프라 구축 및 최적화 프로젝트",
+          startDate: "2023년 6월",
+          endDate: "2023년 12월",
+          details:
+            "AWS를 활용한 클라우드 인프라 구축 및 최적화로 시스템 성능 50% 향상 및 운영 비용 30% 절감 달성",
+        },
+        {
+          name: "대규모 트래픽 처리 시스템 설계 및 구현",
+          startDate: "2024년 1월",
+          endDate: "현재",
+          details:
+            "초당 100만 요청을 처리할 수 있는 확장 가능한 아키텍처 설계 및 구현, 시스템 안정성 99.99% 달성",
+        },
+        {
+          name: "개발 프로세스 개선",
+          startDate: "2023년 9월",
+          endDate: "2023년 11월",
+          details:
+            "CI/CD 파이프라인 구축 및 코드 리뷰 프로세스 개선으로 팀 생산성 30% 향상",
+        },
+      ],
     },
     {
       company: "테크 이노베이션",
       position: "Senior Software Engineer",
-      period: "2020년 3월 - 2023년 5월",
-      description:
-        "- 대규모 분산 시스템 설계 및 구현\n- 마이크로서비스 아키텍처 도입으로 시스템 확장성 200% 개선\n- 실시간 데이터 처리 파이프라인 구축으로 데이터 분석 효율성 50% 향상",
+      startDate: "2020년 3월",
+      endDate: "2023년 5월",
+      achievements: [
+        {
+          name: "대규모 분산 시스템 설계 및 구현",
+          startDate: "2020년 3월",
+          endDate: "2021년 6월",
+          details:
+            "Kubernetes와 Docker를 활용한 마이크로서비스 아키텍처 도입으로 시스템 확장성 200% 개선",
+        },
+        {
+          name: "실시간 데이터 처리 파이프라인 구축",
+          startDate: "2021년 7월",
+          endDate: "2022년 12월",
+          details:
+            "Apache Kafka와 Spark를 이용한 실시간 데이터 처리 파이프라인 구축으로 데이터 분석 효율성 50% 향상",
+        },
+      ],
     },
   ],
   education: [
@@ -86,22 +123,31 @@ function WantedResume() {
           이 정보를 "경력" 섹션에 복사하여 붙여넣으세요.
         </Typography>
         {mockData.experience.map((exp, index) => (
-          <Box key={index} sx={{ mb: 2 }}>
-            <Typography variant="body1">
+          <Box key={index} sx={{ mb: 3 }}>
+            <Typography variant="h6">
               <strong>{exp.company}</strong>
             </Typography>
-            <Typography variant="body2">
-              {exp.position} | {exp.period}
+            <Typography variant="body1">
+              {exp.position} | {exp.startDate} - {exp.endDate}
             </Typography>
-            <Typography
-              variant="body1"
-              paragraph
-              sx={{ whiteSpace: "pre-line", mt: 1 }}
-            >
-              {exp.description}
+            <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
+              주요 성과:
             </Typography>
+            {exp.achievements.map((achievement, achIndex) => (
+              <Box key={achIndex} sx={{ mb: 2 }}>
+                <Typography variant="body1">
+                  <strong>{achievement.name}</strong>
+                </Typography>
+                <Typography variant="body2">
+                  {achievement.startDate} - {achievement.endDate}
+                </Typography>
+                <Typography variant="body1" sx={{ mt: 1 }}>
+                  {achievement.details}
+                </Typography>
+              </Box>
+            ))}
             {index < mockData.experience.length - 1 && (
-              <Divider sx={{ my: 1 }} />
+              <Divider sx={{ my: 2 }} />
             )}
           </Box>
         ))}
