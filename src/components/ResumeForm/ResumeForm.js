@@ -60,22 +60,50 @@ function ResumeForm() {
           : [],
         skills: Array.isArray(response.data.skills) ? response.data.skills : [],
         activities: Array.isArray(response.data.activities)
-          ? response.data.activities
-          : [{ name: "", period: "", details: "" }],
-        certifications: Array.isArray(response.data.certifications)
-          ? response.data.certifications
-          : [{ name: "", organization: "", date: "" }],
-        workExperience: Array.isArray(response.data.work_experience)
-          ? response.data.work_experience
-          : [
-              {
-                companyName: "",
-                department: "",
-                position: "",
-                jobTitle: "",
-                tasks: [{ title: "", period: "", details: "" }],
-              },
-            ],
+          ? response.data.activities.map((activity) => ({
+              id: activity.id,
+              name: activity.name || "",
+              startDate: activity.start_date
+                ? activity.start_date.substring(0, 7)
+                : "",
+              endDate: activity.end_date
+                ? activity.end_date.substring(0, 7)
+                : "",
+              content: activity.content || "",
+            }))
+          : [],
+        certifications: Array.isArray(response.data.certificates)
+          ? response.data.certificates.map((cert) => ({
+              id: cert.id,
+              name: cert.name || "",
+              issuedBy: cert.issued_by || "",
+              issuedDate: cert.issued_date
+                ? cert.issued_date.substring(0, 7)
+                : "",
+            }))
+          : [],
+        workExperiences: Array.isArray(response.data.work_experiences)
+          ? response.data.work_experiences.map((exp) => ({
+              id: exp.id,
+              companyName: exp.company_name || "",
+              department: exp.department || "",
+              position: exp.position || "",
+              job: exp.job || "",
+              workExperienceDetails: Array.isArray(exp.work_experience_details)
+                ? exp.work_experience_details.map((detail) => ({
+                    id: detail.id,
+                    name: detail.name || "",
+                    startDate: detail.start_date
+                      ? detail.start_date.substring(0, 7)
+                      : "",
+                    endDate: detail.end_date
+                      ? detail.end_date.substring(0, 7)
+                      : "",
+                    content: detail.content || "",
+                  }))
+                : [],
+            }))
+          : [],
       };
       return newValues;
     } catch (error) {
