@@ -23,11 +23,28 @@ function Activities() {
                 />
                 <Box mt={2}>
                   <Field
-                    name={`activities.${index}.period`}
+                    name={`activities.${index}.startDate`}
                     as={TextField}
                     fullWidth
-                    label="기간"
+                    label="시작 날짜"
                     variant="outlined"
+                    type="month"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Box>
+                <Box mt={2}>
+                  <Field
+                    name={`activities.${index}.endDate`}
+                    as={TextField}
+                    fullWidth
+                    label="종료 날짜"
+                    variant="outlined"
+                    type="month"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                 </Box>
                 <Box mt={2}>
@@ -49,7 +66,9 @@ function Activities() {
             <Button
               type="button"
               variant="outlined"
-              onClick={() => push({ name: "", period: "", details: "" })}
+              onClick={() =>
+                push({ name: "", startDate: "", endDate: "", details: "" })
+              }
             >
               활동 추가
             </Button>

@@ -23,11 +23,28 @@ function Projects() {
                 />
                 <Box mt={2}>
                   <Field
-                    name={`projects.${index}.period`}
+                    name={`projects.${index}.startDate`}
                     as={TextField}
                     fullWidth
-                    label="기간"
+                    label="시작 날짜"
                     variant="outlined"
+                    type="month"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Box>
+                <Box mt={2}>
+                  <Field
+                    name={`projects.${index}.endDate`}
+                    as={TextField}
+                    fullWidth
+                    label="종료 날짜"
+                    variant="outlined"
+                    type="month"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                 </Box>
                 <Box mt={2}>
@@ -59,7 +76,13 @@ function Projects() {
               type="button"
               variant="outlined"
               onClick={() =>
-                push({ name: "", period: "", description: "", githubUrl: "" })
+                push({
+                  name: "",
+                  startDate: "",
+                  endDate: "",
+                  description: "",
+                  githubUrl: "",
+                })
               }
             >
               프로젝트 추가

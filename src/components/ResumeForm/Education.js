@@ -32,11 +32,28 @@ function Education() {
                 </Box>
                 <Box mt={2}>
                   <Field
-                    name={`education.${index}.period`}
+                    name={`education.${index}.startDate`}
                     as={TextField}
                     fullWidth
-                    label="기간"
+                    label="시작 날짜"
                     variant="outlined"
+                    type="month"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Box>
+                <Box mt={2}>
+                  <Field
+                    name={`education.${index}.endDate`}
+                    as={TextField}
+                    fullWidth
+                    label="종료 날짜"
+                    variant="outlined"
+                    type="month"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                 </Box>
                 <IconButton onClick={() => remove(index)}>
@@ -47,7 +64,9 @@ function Education() {
             <Button
               type="button"
               variant="outlined"
-              onClick={() => push({ schoolName: "", major: "", period: "" })}
+              onClick={() =>
+                push({ schoolName: "", major: "", startDate: "", endDate: "" })
+              }
             >
               학력 추가
             </Button>

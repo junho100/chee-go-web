@@ -73,11 +73,28 @@ function WorkExperience() {
                             />
                             <Box mt={2}>
                               <Field
-                                name={`workExperience.${index}.tasks.${taskIndex}.period`}
+                                name={`workExperience.${index}.tasks.${taskIndex}.startDate`}
                                 as={TextField}
                                 fullWidth
-                                label="기간"
+                                label="시작 날짜"
                                 variant="outlined"
+                                type="month"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                              />
+                            </Box>
+                            <Box mt={2}>
+                              <Field
+                                name={`workExperience.${index}.tasks.${taskIndex}.endDate`}
+                                as={TextField}
+                                fullWidth
+                                label="종료 날짜"
+                                variant="outlined"
+                                type="month"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
                               />
                             </Box>
                             <Box mt={2}>
@@ -101,7 +118,12 @@ function WorkExperience() {
                         type="button"
                         variant="outlined"
                         onClick={() =>
-                          pushTask({ title: "", period: "", details: "" })
+                          pushTask({
+                            title: "",
+                            startDate: "",
+                            endDate: "",
+                            details: "",
+                          })
                         }
                       >
                         업무 추가
@@ -123,7 +145,9 @@ function WorkExperience() {
                   department: "",
                   position: "",
                   jobTitle: "",
-                  tasks: [{ title: "", period: "", details: "" }],
+                  tasks: [
+                    { title: "", startDate: "", endDate: "", details: "" },
+                  ],
                 })
               }
             >
