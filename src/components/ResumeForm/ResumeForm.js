@@ -42,13 +42,22 @@ function ResumeForm() {
               id: edu.id,
               schoolName: edu.school_name || "",
               majorName: edu.major_name || "",
-              startDate: edu.start_date ? edu.start_date.split("T")[0] : "",
-              endDate: edu.end_date ? edu.end_date.split("T")[0] : "",
+              startDate: edu.start_date ? edu.start_date.substring(0, 7) : "",
+              endDate: edu.end_date ? edu.end_date.substring(0, 7) : "",
             }))
           : [],
         projects: Array.isArray(response.data.projects)
-          ? response.data.projects
-          : [{ name: "", period: "", description: "", githubUrl: "" }],
+          ? response.data.projects.map((project) => ({
+              id: project.id,
+              name: project.name || "",
+              startDate: project.start_date
+                ? project.start_date.substring(0, 7)
+                : "",
+              endDate: project.end_date ? project.end_date.substring(0, 7) : "",
+              content: project.content || "",
+              githubUrl: project.github_url || "",
+            }))
+          : [],
         skills: Array.isArray(response.data.skills) ? response.data.skills : [],
         activities: Array.isArray(response.data.activities)
           ? response.data.activities

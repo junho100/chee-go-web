@@ -40,7 +40,7 @@ function Education() {
                         fullWidth
                         label="시작 날짜"
                         variant="outlined"
-                        type="date"
+                        type="month"
                         InputLabelProps={{
                           shrink: true,
                         }}
@@ -53,7 +53,7 @@ function Education() {
                         fullWidth
                         label="종료 날짜"
                         variant="outlined"
-                        type="date"
+                        type="month"
                         InputLabelProps={{
                           shrink: true,
                         }}
