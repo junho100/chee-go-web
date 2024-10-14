@@ -132,9 +132,65 @@ function ResumeForm() {
     loadInitialData();
   }, []);
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values);
-    setSubmitting(false);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const savedData = JSON.parse(localStorage.getItem("resumeData"));
+      if (!savedData) {
+        throw new Error("저장된 이력서 데이터가 없습니다.");
+      }
+
+      const formattedValues = {
+        introduction: savedData.introduction,
+        github_url: savedData.githubUrl,
+        blog_url: savedData.blogUrl,
+        educations: savedData.educations.map((edu) => ({
+          school_name: edu.schoolName,
+          major_name: edu.majorName,
+          start_date: `${edu.startDate}-01T00:00:00Z`,
+          end_date: `${edu.endDate}-01T00:00:00Z`,
+        })),
+        projects: savedData.projects.map((project) => ({
+          name: project.name,
+          start_date: `${project.startDate}-01T00:00:00Z`,
+          end_date: `${project.endDate}-01T00:00:00Z`,
+          content: project.content,
+          github_url: project.githubUrl,
+        })),
+        activities: savedData.activities.map((activity) => ({
+          name: activity.name,
+          content: activity.content,
+          start_date: `${activity.startDate}-01T00:00:00Z`,
+          end_date: `${activity.endDate}-01T00:00:00Z`,
+        })),
+        certificates: savedData.certifications.map((cert) => ({
+          name: cert.name,
+          issued_by: cert.issuedBy,
+          issued_date: `${cert.issuedDate}-01T00:00:00Z`,
+        })),
+        work_experiences: savedData.workExperiences.map((exp) => ({
+          company_name: exp.companyName,
+          department: exp.department,
+          position: exp.position,
+          job: exp.job,
+          details: exp.workExperienceDetails.map((detail) => ({
+            name: detail.name,
+            start_date: `${detail.startDate}-01T00:00:00Z`,
+            end_date: `${detail.endDate}-01T00:00:00Z`,
+            content: detail.content,
+          })),
+        })),
+        keywords: savedData.skills,
+      };
+
+      const response = await api.post("/resumes", formattedValues);
+      console.log("이력서가 성공적으로 저장되었습니다:", response.data);
+      alert("이력서가 성공적으로 저장되었습니다.");
+    } catch (error) {
+      console.error("이력서 저장 중 오류가 발생했습니다:", error);
+      alert("이력서 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleLoadResume = async () => {
