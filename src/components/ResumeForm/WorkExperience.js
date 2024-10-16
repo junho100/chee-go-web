@@ -58,6 +58,32 @@ function WorkExperience() {
                         variant="outlined"
                       />
                     </Box>
+                    <Box mt={2}>
+                      <Field
+                        name={`workExperiences.${index}.startDate`}
+                        as={TextField}
+                        fullWidth
+                        label="시작 날짜"
+                        variant="outlined"
+                        type="month"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Box>
+                    <Box mt={2}>
+                      <Field
+                        name={`workExperiences.${index}.endDate`}
+                        as={TextField}
+                        fullWidth
+                        label="종료 날짜"
+                        variant="outlined"
+                        type="month"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Box>
                     <Typography variant="subtitle1" mt={2}>
                       업무 상세
                     </Typography>
@@ -160,6 +186,8 @@ function WorkExperience() {
                   department: "",
                   position: "",
                   job: "",
+                  startDate: "",
+                  endDate: "",
                   workExperienceDetails: [
                     { name: "", startDate: "", endDate: "", content: "" },
                   ],

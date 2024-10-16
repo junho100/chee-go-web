@@ -92,6 +92,8 @@ function ResumeForm() {
               department: exp.department || "",
               position: exp.position || "",
               job: exp.job || "",
+              startDate: exp.start_date ? exp.start_date.substring(0, 7) : "",
+              endDate: exp.end_date ? exp.end_date.substring(0, 7) : "",
               workExperienceDetails: Array.isArray(exp.work_experience_details)
                 ? exp.work_experience_details.map((detail) => ({
                     id: detail.id,
@@ -172,6 +174,8 @@ function ResumeForm() {
           department: exp.department,
           position: exp.position,
           job: exp.job,
+          start_date: `${exp.startDate}-01T00:00:00Z`,
+          end_date: `${exp.endDate}-01T00:00:00Z`,
           details: exp.workExperienceDetails.map((detail) => ({
             name: detail.name,
             start_date: `${detail.startDate}-01T00:00:00Z`,
