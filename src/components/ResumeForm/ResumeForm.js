@@ -50,6 +50,7 @@ function ResumeForm() {
           ? response.data.projects.map((project) => ({
               id: project.id,
               name: project.name || "",
+              summary: project.summary || "", // 한줄 요약 추가
               startDate: project.start_date
                 ? project.start_date.substring(0, 7)
                 : "",
@@ -153,6 +154,7 @@ function ResumeForm() {
         })),
         projects: savedData.projects.map((project) => ({
           name: project.name,
+          summary: project.summary, // 한줄 요약 추가
           start_date: `${project.startDate}-01T00:00:00Z`,
           end_date: `${project.endDate}-01T00:00:00Z`,
           content: project.content,

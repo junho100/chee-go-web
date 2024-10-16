@@ -26,6 +26,15 @@ function Projects() {
                     />
                     <Box mt={2}>
                       <Field
+                        name={`projects.${index}.summary`}
+                        as={TextField}
+                        fullWidth
+                        label="한줄 요약"
+                        variant="outlined"
+                      />
+                    </Box>
+                    <Box mt={2}>
+                      <Field
                         name={`projects.${index}.startDate`}
                         as={TextField}
                         fullWidth
@@ -82,6 +91,7 @@ function Projects() {
               onClick={() =>
                 push({
                   name: "",
+                  summary: "", // 한줄 요약 초기값 추가
                   startDate: "",
                   endDate: "",
                   content: "",
