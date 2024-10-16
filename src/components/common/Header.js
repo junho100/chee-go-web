@@ -82,7 +82,7 @@ function Header() {
           to="/"
           sx={{ flexGrow: 1, textDecoration: "none", color: "inherit" }}
         >
-          이력서 생성기
+          취Go
         </Typography>
         <Button color="inherit" component={RouterLink} to="/resume">
           이력서
