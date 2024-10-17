@@ -1,0 +1,43 @@
+name: React S3 Deployment
+
+on:
+  push:
+    branches: ["main-invalid"]
+jobs:
+  buildAndDeploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.20.0]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm install
+
+      - name: build files
+        working-directory: ./
+        run: npm run build
+
+      - name: aws setting
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Deploy to S3
+        run: aws s3 sync ./build/ s3://${{secrets.S3_BUCKET_NAME}} --delete
+
+      - name: CloudFront Invalidation
+        env:
+          CLOUD_FRONT_ID: ${{secrets.CF_ID}}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id $CLOUD_FRONT_ID --paths "/*"
