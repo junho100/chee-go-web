@@ -9,6 +9,8 @@ function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [idError, setIdError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [formError, setFormError] = useState("");
 
   const handleIdCheck = () => {
     // 여기에 실제 ID 중복 검사 로직을 구현해야 합니다.
@@ -21,17 +23,47 @@ function SignUp() {
     }
   };
 
+  const validateEmail = (email) => {
+    const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return re.test(email);
+  };
+
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    if (!validateEmail(newEmail)) {
+      setEmailError("유효한 이메일 주소를 입력해주세요.");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    if (newPassword.length < 3) {
+      setPasswordError("비밀번호는 최소 3글자 이상이어야 합니다.");
+    } else {
+      setPasswordError("");
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!id || !email || !password || !confirmPassword) {
+      setFormError("모든 필드를 입력해주세요.");
+      return;
+    }
     if (password !== confirmPassword) {
       setPasswordError("비밀번호가 일치하지 않습니다.");
       return;
     }
-    if (idError || passwordError) {
+    if (idError || passwordError || emailError) {
       return;
     }
     // 여기에 회원가입 로직을 추가하세요
     console.log("회원가입 시도:", { id, email, password });
+    setFormError("");
   };
 
   return (
@@ -76,7 +108,9 @@ function SignUp() {
             variant="outlined"
             margin="normal"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleEmailChange}
+            error={!!emailError}
+            helperText={emailError}
           />
           <TextField
             fullWidth
@@ -85,7 +119,10 @@ function SignUp() {
             variant="outlined"
             margin="normal"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
+            error={!!passwordError}
+            helperText={passwordError}
+            required
           />
           <TextField
             fullWidth
@@ -97,7 +134,13 @@ function SignUp() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             error={!!passwordError}
             helperText={passwordError}
+            required
           />
+          {formError && (
+            <Typography color="error" align="center">
+              {formError}
+            </Typography>
+          )}
           <Button
             type="submit"
             fullWidth
