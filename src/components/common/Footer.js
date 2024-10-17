@@ -21,17 +21,6 @@ function Footer() {
           bemodesty306@naver.com
         </Link>
       </Typography>
-      <Typography variant="body2" color="text.secondary" align="center">
-        GitHub:{" "}
-        <Link
-          href="https://github.com/junho100"
-          target="_blank"
-          rel="noopener noreferrer"
-          color="inherit"
-        >
-          https://github.com/junho100
-        </Link>
-      </Typography>
       <Typography
         variant="body2"
         color="text.secondary"
