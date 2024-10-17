@@ -40,6 +40,13 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // ID와 비밀번호가 비어있는지 확인
+    if (!id.trim() || !password.trim()) {
+      setError("아이디와 비밀번호를 모두 입력해주세요.");
+      return;
+    }
+
     try {
       const response = await axios.post(
         "http://localhost:8080/api/users/login",
