@@ -4,16 +4,17 @@ import axios from "axios";
 
 function ForgotPassword() {
   const [id, setId] = useState("");
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      await axios.post("/api/forgot-password", { id });
-      setMessage("이메일이 전송되었습니다. 이메일을 확인해 주세요.");
-    } catch (error) {
-      setMessage("오류가 발생했습니다. 다시 시도해 주세요.");
-    }
+    // try {
+    //   await axios.post("/api/forgot-password", { id });
+    //   setMessage("이메일이 전송되었습니다. 이메일을 확인해 주세요.");
+    // } catch (error) {
+    //   setMessage("오류가 발생했습니다. 다시 시도해 주세요.");
+    // }
+    alert("준비 중입니다. 사이트 하단 이메일을 통해 관리자에게 문의 주세요.");
   };
 
   return (
@@ -48,11 +49,11 @@ function ForgotPassword() {
             이메일 전송
           </Button>
         </form>
-        {message && (
+        {/* {message && (
           <Typography color="primary" align="center">
             {message}
           </Typography>
-        )}
+        )} */}
       </Paper>
     </Box>
   );
