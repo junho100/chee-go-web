@@ -28,7 +28,10 @@ function ResetPassword() {
       return;
     }
     try {
-      await axios.post("/api/reset-password", { email, password });
+      await axios.post(`${process.env.REACT_APP_API_URL}/reset-password`, {
+        email,
+        password,
+      });
       setMessage("비밀번호가 성공적으로 변경되었습니다.");
       setTimeout(() => navigate("/login"), 3000);
     } catch (error) {
