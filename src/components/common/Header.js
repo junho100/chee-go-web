@@ -32,6 +32,9 @@ function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // 로그인이 필요하지 않은 경로들을 정의합니다.
+  const publicPaths = ["/", "/signup", "/forgot-password", "/reset-password"];
+
   const checkLoginStatus = async () => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -49,7 +52,11 @@ function Header() {
         handleLogout();
       }
     } else {
-      handleLogout();
+      setIsLoggedIn(false);
+      // 현재 경로가 publicPaths에 포함되지 않은 경우에만 리다이렉트합니다.
+      if (!publicPaths.includes(location.pathname)) {
+        navigate("/");
+      }
     }
   };
 
