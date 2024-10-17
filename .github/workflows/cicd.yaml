@@ -2,7 +2,7 @@ name: React S3 Deployment
 
 on:
   push:
-    branches: ["main-invalid"]
+    branches: ["master"]
 jobs:
   buildAndDeploy:
     runs-on: ubuntu-latest
