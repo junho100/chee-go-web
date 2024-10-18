@@ -14,14 +14,29 @@ function SignUp() {
   const [formError, setFormError] = useState("");
   const navigate = useNavigate();
 
-  const handleIdCheck = () => {
-    // 여기에 실제 ID 중복 검사 로직을 구현해야 합니다.
-    // 지금은 예시로 간단히 구현합니다.
+  const handleIdCheck = async () => {
     if (id.length < 4) {
       setIdError("ID는 4자 이상이어야 합니다.");
-    } else {
-      setIdError("");
-      alert("사용 가능한 ID입니다.");
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/users/check-id`,
+        {
+          params: { id: id },
+        }
+      );
+
+      if (response.data.available) {
+        setIdError("");
+        alert("사용 가능한 ID입니다.");
+      } else {
+        setIdError("이미 사용 중인 ID입니다.");
+      }
+    } catch (error) {
+      console.error("ID 중복 검사 실패:", error);
+      setIdError("ID 중복 검사에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -66,7 +81,7 @@ function SignUp() {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/users`,
+        `${process.env.REACT_APP_API_URL}/users`,
         {
           id,
           password,
