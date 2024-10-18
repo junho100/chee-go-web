@@ -28,11 +28,13 @@ function SignUp() {
         }
       );
 
-      if (response.data.available) {
-        setIdError("");
-        alert("사용 가능한 ID입니다.");
-      } else {
-        setIdError("이미 사용 중인 ID입니다.");
+      if (response.status === 200) {
+        if (!response.data.is_exists) {
+          setIdError("");
+          alert("사용 가능한 ID입니다.");
+        } else {
+          setIdError("이미 사용 중인 ID입니다.");
+        }
       }
     } catch (error) {
       console.error("ID 중복 검사 실패:", error);
