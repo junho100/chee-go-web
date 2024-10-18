@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Typography, Paper } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function SignUp() {
   const [id, setId] = useState("");
@@ -11,6 +12,7 @@ function SignUp() {
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [formError, setFormError] = useState("");
+  const navigate = useNavigate();
 
   const handleIdCheck = () => {
     // 여기에 실제 ID 중복 검사 로직을 구현해야 합니다.
@@ -48,7 +50,7 @@ function SignUp() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!id || !email || !password || !confirmPassword) {
       setFormError("모든 필드를 입력해주세요.");
@@ -61,9 +63,25 @@ function SignUp() {
     if (idError || passwordError || emailError) {
       return;
     }
-    // 여기에 회원가입 로직을 추가하세요
-    console.log("회원가입 시도:", { id, email, password });
-    setFormError("");
+
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/users`,
+        {
+          id,
+          password,
+          email,
+        }
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        console.log("회원가입 성공:", response.data);
+        navigate("/resume"); // 이력서 페이지로 이동
+      }
+    } catch (error) {
+      console.error("회원가입 실패:", error);
+      setFormError("회원가입에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
