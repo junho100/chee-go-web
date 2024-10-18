@@ -50,7 +50,7 @@ function ResumeForm() {
           ? response.data.projects.map((project) => ({
               id: project.id,
               name: project.name || "",
-              summary: project.summary || "", // 한줄 요약 추가
+              summary: project.summary || "",
               startDate: project.start_date
                 ? project.start_date.substring(0, 7)
                 : "",
@@ -62,7 +62,7 @@ function ResumeForm() {
         skills: Array.isArray(response.data.keywords)
           ? response.data.keywords
           : [],
-        skillInput: "", // 새로운 스킬 입력을 위한 필드
+        skillInput: "",
         activities: Array.isArray(response.data.activities)
           ? response.data.activities.map((activity) => ({
               id: activity.id,
@@ -113,8 +113,24 @@ function ResumeForm() {
       };
       return newValues;
     } catch (error) {
-      console.error("이력서 데이터를 가져오는 데 실패했습니다:", error);
-      return null;
+      if (error.response && error.response.status === 404) {
+        console.log("이력서 데이터가 없습니다. 빈 데이터를 생성합니다.");
+        return {
+          introduction: "",
+          githubUrl: "",
+          blogUrl: "",
+          educations: [],
+          projects: [],
+          skills: [],
+          skillInput: "",
+          activities: [],
+          certifications: [],
+          workExperiences: [],
+        };
+      } else {
+        console.error("이력서 데이터를 가져오는 데 실패했습니다:", error);
+        return null;
+      }
     }
   };
 

@@ -95,7 +95,18 @@ function Login() {
       };
       localStorage.setItem("resumeData", JSON.stringify(resumeData));
     } catch (error) {
-      console.error("이력서 데이터를 가져오는 데 실패했습니다:", error);
+      if (error.response && error.response.status === 404) {
+        const emptyResumeData = {
+          introduction: "",
+          githubUrl: "",
+          blogUrl: "",
+          educations: [],
+          // ... 다른 필드들도 빈 값으로 초기화 ...
+        };
+        localStorage.setItem("resumeData", JSON.stringify(emptyResumeData));
+      } else {
+        console.error("이력서 데이터를 가져오는 데 실패했습니다:", error);
+      }
     }
   };
 
