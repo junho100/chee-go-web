@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Typography, Button, styled } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  styled,
+  IconButton,
+  Menu,
+  MenuItem,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
 import api from "../../utils/api";
 
@@ -46,6 +58,9 @@ function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   // 로그인이 필요하지 않은 경로들을 정의합니다.
   const publicPaths = [
@@ -101,6 +116,14 @@ function Header() {
     navigate("/");
   };
 
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -108,26 +131,93 @@ function Header() {
           variant="h6"
           component={RouterLink}
           to="/"
-          sx={{ textDecoration: "none", color: "inherit" }}
+          sx={{ textDecoration: "none", color: "inherit", flexGrow: 1 }}
         >
           취Go
         </Typography>
-        <IntroButton component={RouterLink} to="/service-intro">
-          서비스 소개
-        </IntroButton>
-        <div style={{ flexGrow: 1 }}></div>
-        <Button color="inherit" component={RouterLink} to="/resume">
-          이력서
-        </Button>
-        <Button color="inherit" component={RouterLink} to="/linkedin">
-          링크드인 형식
-        </Button>
-        <Button color="inherit" component={RouterLink} to="/programmers">
-          프로그래머스 형식
-        </Button>
-        <Button color="inherit" component={RouterLink} to="/wanted">
-          원티드 형식
-        </Button>
+        {!isMobile && (
+          <IntroButton component={RouterLink} to="/service-intro">
+            서비스 소개
+          </IntroButton>
+        )}
+        {isMobile ? (
+          <>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={handleMenu}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem
+                onClick={handleClose}
+                component={RouterLink}
+                to="/service-intro"
+              >
+                서비스 소개
+              </MenuItem>
+              <MenuItem
+                onClick={handleClose}
+                component={RouterLink}
+                to="/resume"
+              >
+                이력서
+              </MenuItem>
+              <MenuItem
+                onClick={handleClose}
+                component={RouterLink}
+                to="/linkedin"
+              >
+                링크드인 형식
+              </MenuItem>
+              <MenuItem
+                onClick={handleClose}
+                component={RouterLink}
+                to="/programmers"
+              >
+                프로그래머스 형식
+              </MenuItem>
+              <MenuItem
+                onClick={handleClose}
+                component={RouterLink}
+                to="/wanted"
+              >
+                원티드 형식
+              </MenuItem>
+            </Menu>
+          </>
+        ) : (
+          <>
+            <Button color="inherit" component={RouterLink} to="/resume">
+              이력서
+            </Button>
+            <Button color="inherit" component={RouterLink} to="/linkedin">
+              링크드인 형식
+            </Button>
+            <Button color="inherit" component={RouterLink} to="/programmers">
+              프로그래머스 형식
+            </Button>
+            <Button color="inherit" component={RouterLink} to="/wanted">
+              원티드 형식
+            </Button>
+          </>
+        )}
         {isLoggedIn ? (
           <LogoutButton onClick={handleLogout} variant="contained">
             로그아웃
