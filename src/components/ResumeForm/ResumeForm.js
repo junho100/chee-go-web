@@ -114,7 +114,6 @@ function ResumeForm() {
       return newValues;
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        console.log("이력서 데이터가 없습니다. 빈 데이터를 생성합니다.");
         return {
           introduction: "",
           githubUrl: "",
@@ -204,8 +203,7 @@ function ResumeForm() {
         keywords: savedData.skills,
       };
 
-      const response = await api.post("/resumes", formattedValues);
-      console.log("이력서가 성공적으로 저장되었습니다:", response.data);
+      await api.post("/resumes", formattedValues);
       alert("이력서가 성공적으로 저장되었습니다.");
     } catch (error) {
       console.error("이력서 저장 중 오류가 발생했습니다:", error);

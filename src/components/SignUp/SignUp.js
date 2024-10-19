@@ -92,7 +92,6 @@ function SignUp() {
       );
 
       if (response.status === 200 || response.status === 201) {
-        console.log("회원가입 성공:", response.data);
         navigate("/resume"); // 이력서 페이지로 이동
       }
     } catch (error) {
