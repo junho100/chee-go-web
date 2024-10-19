@@ -115,7 +115,10 @@ function WantedResume() {
                   {detail.StartDate.substring(0, 7)} -{" "}
                   {detail.EndDate.substring(0, 7)}
                 </Typography>
-                <Typography variant="body1" sx={{ mt: 1 }}>
+                <Typography
+                  variant="body1"
+                  sx={{ mt: 1, whiteSpace: "pre-line" }}
+                >
                   {detail.Content}
                 </Typography>
               </Box>
