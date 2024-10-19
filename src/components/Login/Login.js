@@ -43,7 +43,7 @@ function Login() {
 
     // ID와 비밀번호가 비어있는지 확인
     if (!id.trim() || !password.trim()) {
-      setError("아이디와 비밀번��를 모두 입력해주세요.");
+      setError("아이디와 비밀번호를 모두 입력해주세요.");
       return;
     }
 
