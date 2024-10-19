@@ -1,7 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, useFormikContext } from "formik";
 import * as Yup from "yup";
-import { Container, Paper, Typography, Button, Box } from "@mui/material";
+import {
+  Container,
+  Paper,
+  Typography,
+  Button,
+  Box,
+  Snackbar,
+} from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
 import PersonalInfo from "./PersonalInfo";
 import Education from "./Education";
 import Projects from "./Projects";
@@ -29,6 +37,11 @@ function LocalStorageUpdater() {
 function ResumeForm() {
   const [initialValues, setInitialValues] = useState(null);
   const formikRef = useRef();
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   const fetchResumeData = async () => {
     try {
@@ -204,10 +217,18 @@ function ResumeForm() {
       };
 
       await api.post("/resumes", formattedValues);
-      alert("이력서가 성공적으로 저장되었습니다.");
+      setSnackbar({
+        open: true,
+        message: "이력서가 성공적으로 저장되었습니다.",
+        severity: "success",
+      });
     } catch (error) {
       console.error("이력서 저장 중 오류가 발생했습니다:", error);
-      alert("이력서 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+      setSnackbar({
+        open: true,
+        message: "이력서 저장 중 오류가 발생했습니다. 다시 시도해 주세요.",
+        severity: "error",
+      });
     } finally {
       setSubmitting(false);
     }
@@ -224,6 +245,13 @@ function ResumeForm() {
         localStorage.setItem("resumeData", JSON.stringify(newValues));
       }
     }
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbar({ ...snackbar, open: false });
   };
 
   if (!initialValues) {
@@ -272,6 +300,21 @@ function ResumeForm() {
           )}
         </Formik>
       </Paper>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+        >
+          {snackbar.message}
+        </MuiAlert>
+      </Snackbar>
     </Container>
   );
 }

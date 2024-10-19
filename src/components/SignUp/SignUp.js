@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography, Paper } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  Snackbar,
+} from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -12,7 +20,19 @@ function SignUp() {
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [formError, setFormError] = useState("");
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
   const navigate = useNavigate();
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   const handleIdCheck = async () => {
     if (id.length < 4) {
@@ -31,7 +51,11 @@ function SignUp() {
       if (response.status === 200) {
         if (!response.data.is_exists) {
           setIdError("");
-          alert("사용 가능한 ID입니다.");
+          setSnackbar({
+            open: true,
+            message: "사용 가능한 ID입니다.",
+            severity: "success",
+          });
         } else {
           setIdError("이미 사용 중인 ID입니다.");
         }
@@ -189,6 +213,21 @@ function SignUp() {
           이미 계정이 있으신가요? 로그인
         </Button>
       </Paper>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+        >
+          {snackbar.message}
+        </MuiAlert>
+      </Snackbar>
     </Box>
   );
 }
