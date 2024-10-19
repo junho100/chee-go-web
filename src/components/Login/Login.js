@@ -43,7 +43,7 @@ function Login() {
 
     // ID와 비밀번호가 비어있는지 확인
     if (!id.trim() || !password.trim()) {
-      setError("아이디와 비밀번호를 모두 입력해주세요.");
+      setError("아이디와 비밀번��를 모두 입력해주세요.");
       return;
     }
 
@@ -88,7 +88,18 @@ function Login() {
         height: "80vh",
       }}
     >
-      <Typography variant="h5" align="center" gutterBottom sx={{ mb: 4 }}>
+      <Typography
+        variant="h5"
+        align="center"
+        gutterBottom
+        sx={{
+          mb: 4,
+          px: 2, // 좌우 패딩 추가
+          wordBreak: "keep-all", // 단어 단위로 줄바꿈
+          whiteSpace: "pre-line", // 필요한 경우 줄바꿈 허용
+          textAlign: "center", // 텍스트 중앙 정렬
+        }}
+      >
         이력서를 구직 플랫폼에 맞게 변환해드려요!
       </Typography>
       <Paper elevation={3} sx={{ p: 4, width: "100%", maxWidth: 400 }}>
