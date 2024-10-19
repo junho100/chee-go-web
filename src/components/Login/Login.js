@@ -101,7 +101,12 @@ function Login() {
           githubUrl: "",
           blogUrl: "",
           educations: [],
-          // ... 다른 필드들도 빈 값으로 초기화 ...
+          projects: [],
+          skills: [],
+          skillInput: "",
+          activities: [],
+          certifications: [],
+          workExperiences: [],
         };
         localStorage.setItem("resumeData", JSON.stringify(emptyResumeData));
       } else {
