@@ -56,7 +56,8 @@ function Activities() {
                         as={TextField}
                         fullWidth
                         multiline
-                        rows={4}
+                        minRows={3}
+                        maxRows={20}
                         label="세부 내용"
                         variant="outlined"
                       />

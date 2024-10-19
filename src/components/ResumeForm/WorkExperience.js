@@ -141,7 +141,8 @@ function WorkExperience() {
                                     as={TextField}
                                     fullWidth
                                     multiline
-                                    rows={4}
+                                    minRows={3}
+                                    maxRows={20}
                                     label="업무 내용"
                                     variant="outlined"
                                   />

@@ -65,7 +65,8 @@ function Projects() {
                         as={TextField}
                         fullWidth
                         multiline
-                        rows={4}
+                        minRows={3}
+                        maxRows={20}
                         label="내용"
                         variant="outlined"
                       />
