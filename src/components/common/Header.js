@@ -27,13 +27,34 @@ const LogoutButton = styled(Button)({
   marginLeft: "16px",
 });
 
+// 서비스 소개 버튼을 위한 새로운 스타일 컴포넌트
+const IntroButton = styled(Button)({
+  backgroundColor: "rgba(255, 255, 255, 0.1)", // 반투명한 흰색
+  color: "#ffffff",
+  fontSize: "0.8rem",
+  fontWeight: "normal",
+  "&:hover": {
+    backgroundColor: "rgba(255, 255, 255, 0.2)", // 호버 시 약간 더 불투명한 흰색
+  },
+  padding: "2px 8px",
+  marginLeft: "8px",
+  borderRadius: "4px",
+  textTransform: "none", // 대문자 변환 방지
+});
+
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   // 로그인이 필요하지 않은 경로들을 정의합니다.
-  const publicPaths = ["/", "/signup", "/forgot-password", "/reset-password"];
+  const publicPaths = [
+    "/",
+    "/signup",
+    "/forgot-password",
+    "/reset-password",
+    "/service-intro",
+  ];
 
   const checkLoginStatus = async () => {
     const token = localStorage.getItem("token");
@@ -87,10 +108,14 @@ function Header() {
           variant="h6"
           component={RouterLink}
           to="/"
-          sx={{ flexGrow: 1, textDecoration: "none", color: "inherit" }}
+          sx={{ textDecoration: "none", color: "inherit" }}
         >
           취Go
         </Typography>
+        <IntroButton component={RouterLink} to="/service-intro">
+          서비스 소개
+        </IntroButton>
+        <div style={{ flexGrow: 1 }}></div>
         <Button color="inherit" component={RouterLink} to="/resume">
           이력서
         </Button>

@@ -121,6 +121,17 @@ function ServiceIntro() {
     borderRadius: "4px",
   };
 
+  const handleResumeButtonClick = async () => {
+    const isLoggedIn = localStorage.getItem("token"); // 토큰 존재 여부로 로그인 상태 확인
+
+    if (isLoggedIn) {
+      await fetchAndStoreResumeData();
+      navigate("/resume");
+    } else {
+      navigate("/"); // 로그인 페이지로 리다이렉트
+    }
+  };
+
   return (
     <Container maxWidth="md">
       <Paper elevation={3} sx={{ p: 4, mt: 4, mb: 4 }}>
@@ -166,10 +177,7 @@ function ServiceIntro() {
             variant="contained"
             color="primary"
             size="large"
-            onClick={async () => {
-              await fetchAndStoreResumeData();
-              navigate("/resume");
-            }}
+            onClick={handleResumeButtonClick}
           >
             이력서 작성하러 가기
           </Button>
