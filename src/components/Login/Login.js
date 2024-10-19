@@ -134,7 +134,7 @@ function Login() {
       }}
     >
       <Typography variant="h5" align="center" gutterBottom sx={{ mb: 4 }}>
-        이력서를 한번에 관리하고 취업에 성공하자!
+        이력서를 구직 플랫폼에 맞게 변환해드려요!
       </Typography>
       <Paper elevation={3} sx={{ p: 4, width: "100%", maxWidth: 400 }}>
         <Typography variant="h4" align="center" gutterBottom>
