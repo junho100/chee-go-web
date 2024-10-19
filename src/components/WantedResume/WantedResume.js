@@ -166,7 +166,7 @@ function WantedResume() {
           수상 및 기타
         </Typography>
         <Typography variant="body2" color="text.secondary" paragraph>
-          이 정보�� "수상 및 기타" 섹션에 복사하여 붙여넣으세요.
+          이 정보를 "수상 및 기타" 섹션에 복사하여 붙여넣으세요.
         </Typography>
         {resumeData.Certificates.map((cert, index) => (
           <Box key={index} sx={{ mb: 2 }}>
