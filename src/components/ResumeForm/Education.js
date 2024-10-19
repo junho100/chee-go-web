@@ -29,7 +29,7 @@ function Education() {
                         name={`educations.${index}.majorName`}
                         as={TextField}
                         fullWidth
-                        label="전공명"
+                        label="전공명, 학위"
                         variant="outlined"
                       />
                     </Box>
