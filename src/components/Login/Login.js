@@ -57,60 +57,15 @@ function Login() {
       );
 
       if (response.status === 201) {
-        const { token } = response.data;
-        localStorage.setItem("token", token);
+        localStorage.setItem("token", response.data.token);
         window.dispatchEvent(new Event("loginStateChanged"));
-
-        // 이력서 데이터를 가져와 localStorage에 저장
-        await fetchAndStoreResumeData();
-
-        navigate("/resume");
+        navigate("/service-intro"); // 여기를 /service-intro로 변경
       }
     } catch (error) {
       if (error.response && error.response.status === 403) {
         setError("로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
       } else {
         setError("로그인 중 오류가 발생했습니다. 나중에 다시 시도해주세요.");
-      }
-    }
-  };
-
-  const fetchAndStoreResumeData = async () => {
-    try {
-      const response = await api.get("/resumes");
-      const resumeData = {
-        introduction: response.data.introduction || "",
-        githubUrl: response.data.github_url || "",
-        blogUrl: response.data.blog_url || "",
-        educations: Array.isArray(response.data.educations)
-          ? response.data.educations.map((edu) => ({
-              id: edu.id,
-              schoolName: edu.school_name || "",
-              majorName: edu.major_name || "",
-              startDate: edu.start_date ? edu.start_date.substring(0, 7) : "",
-              endDate: edu.end_date ? edu.end_date.substring(0, 7) : "",
-            }))
-          : [],
-        // ... 다른 필드들도 같은 방식으로 변환 ...
-      };
-      localStorage.setItem("resumeData", JSON.stringify(resumeData));
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
-        const emptyResumeData = {
-          introduction: "",
-          githubUrl: "",
-          blogUrl: "",
-          educations: [],
-          projects: [],
-          skills: [],
-          skillInput: "",
-          activities: [],
-          certifications: [],
-          workExperiences: [],
-        };
-        localStorage.setItem("resumeData", JSON.stringify(emptyResumeData));
-      } else {
-        console.error("이력서 데이터를 가져오는 데 실패했습니다:", error);
       }
     }
   };

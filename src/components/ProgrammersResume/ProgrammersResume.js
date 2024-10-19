@@ -27,7 +27,6 @@ function ProgrammersResume() {
       try {
         const response = await api.get("/resumes/programmers");
         setResumeData(response.data);
-        console.log(response.data);
         setLoading(false);
       } catch (error) {
         console.error("이력서 데이터를 가져오는 데 실패했습니다:", error);

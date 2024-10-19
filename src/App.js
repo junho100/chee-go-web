@@ -11,6 +11,7 @@ import SignUp from "./components/SignUp/SignUp";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import Footer from "./components/common/Footer";
+import ServiceIntro from "./components/ServiceIntro/ServiceIntro";
 
 const theme = createTheme({
   palette: {
@@ -36,6 +37,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/service-intro" element={<ServiceIntro />} />
               <Route path="/resume" element={<ResumeForm />} />
               <Route path="/linkedin" element={<LinkedInResume />} />
               <Route path="/programmers" element={<ProgrammersResume />} />
