@@ -10,34 +10,39 @@ import {
   MenuItem,
   useMediaQuery,
   useTheme,
+  Divider,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
 import api from "../../utils/api";
 
 // 스타일링된 로그인 버튼 컴포넌트 생성
-const LoginButton = styled(Button)({
-  backgroundColor: "#4CAF50", // 초록색
+const LoginButton = styled(Button)(({ theme }) => ({
+  backgroundColor: "#4CAF50",
   color: "#ffffff",
   fontWeight: "bold",
   "&:hover": {
-    backgroundColor: "#45a049", // 호버 시 약간 어두운 초록색
+    backgroundColor: "#45a049",
   },
   padding: "6px 16px",
-  marginLeft: "16px",
-});
+  [theme.breakpoints.down("md")]: {
+    marginLeft: theme.spacing(2), // 모바일에서 왼쪽 마진 추가
+  },
+}));
 
 // 스타일링된 로그아웃 버튼 컴포넌트 생성
-const LogoutButton = styled(Button)({
-  backgroundColor: "#f44336", // 붉은색
+const LogoutButton = styled(Button)(({ theme }) => ({
+  backgroundColor: "#f44336",
   color: "#ffffff",
   fontWeight: "bold",
   "&:hover": {
-    backgroundColor: "#d32f2f", // 호버 시 약간 어두운 붉은색
+    backgroundColor: "#d32f2f",
   },
   padding: "6px 16px",
-  marginLeft: "16px",
-});
+  [theme.breakpoints.down("md")]: {
+    marginLeft: theme.spacing(2), // 모바일에서 왼쪽 마진 추가
+  },
+}));
 
 // 서비스 소개 버튼을 위한 새로운 스타일 컴포넌트
 const IntroButton = styled(Button)({
@@ -124,6 +129,45 @@ function Header() {
     setAnchorEl(null);
   };
 
+  const menuItems = [
+    { text: "서비스 소개", path: "/service-intro" },
+    { text: "이력서", path: "/resume" },
+    { text: "링크드인 형식", path: "/linkedin" },
+    { text: "프로그래머스 형식", path: "/programmers" },
+    { text: "원티드 형식", path: "/wanted" },
+  ];
+
+  const renderMenuItems = () => {
+    const items = menuItems.map((item) => (
+      <MenuItem
+        key={item.path}
+        onClick={handleClose}
+        component={RouterLink}
+        to={item.path}
+      >
+        {item.text}
+      </MenuItem>
+    ));
+
+    if (isLoggedIn) {
+      items.push(
+        <Divider key="divider" sx={{ my: 1 }} />,
+        <MenuItem
+          key="logout"
+          onClick={() => {
+            handleClose();
+            handleLogout();
+          }}
+          sx={{ color: "error.main" }}
+        >
+          로그아웃
+        </MenuItem>
+      );
+    }
+
+    return items;
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -135,11 +179,6 @@ function Header() {
         >
           취Go
         </Typography>
-        {!isMobile && (
-          <IntroButton component={RouterLink} to="/service-intro">
-            서비스 소개
-          </IntroButton>
-        )}
         {isMobile ? (
           <>
             <IconButton
@@ -165,67 +204,34 @@ function Header() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem
-                onClick={handleClose}
-                component={RouterLink}
-                to="/service-intro"
-              >
-                서비스 소개
-              </MenuItem>
-              <MenuItem
-                onClick={handleClose}
-                component={RouterLink}
-                to="/resume"
-              >
-                이력서
-              </MenuItem>
-              <MenuItem
-                onClick={handleClose}
-                component={RouterLink}
-                to="/linkedin"
-              >
-                링크드인 형식
-              </MenuItem>
-              <MenuItem
-                onClick={handleClose}
-                component={RouterLink}
-                to="/programmers"
-              >
-                프로그래머스 형식
-              </MenuItem>
-              <MenuItem
-                onClick={handleClose}
-                component={RouterLink}
-                to="/wanted"
-              >
-                원티드 형식
-              </MenuItem>
+              {renderMenuItems()}
             </Menu>
           </>
         ) : (
           <>
-            <Button color="inherit" component={RouterLink} to="/resume">
-              이력서
-            </Button>
-            <Button color="inherit" component={RouterLink} to="/linkedin">
-              링크드인 형식
-            </Button>
-            <Button color="inherit" component={RouterLink} to="/programmers">
-              프로그래머스 형식
-            </Button>
-            <Button color="inherit" component={RouterLink} to="/wanted">
-              원티드 형식
-            </Button>
+            <IntroButton component={RouterLink} to="/service-intro">
+              서비스 소개
+            </IntroButton>
+            {menuItems.slice(1).map((item) => (
+              <Button
+                key={item.path}
+                color="inherit"
+                component={RouterLink}
+                to={item.path}
+              >
+                {item.text}
+              </Button>
+            ))}
+            {isLoggedIn ? (
+              <LogoutButton onClick={handleLogout} variant="contained">
+                로그아웃
+              </LogoutButton>
+            ) : (
+              <LoginButton component={RouterLink} to="/" variant="contained">
+                로그인
+              </LoginButton>
+            )}
           </>
-        )}
-        {isLoggedIn ? (
-          <LogoutButton onClick={handleLogout} variant="contained">
-            로그아웃
-          </LogoutButton>
-        ) : (
-          <LoginButton component={RouterLink} to="/" variant="contained">
-            로그인
-          </LoginButton>
         )}
       </Toolbar>
     </AppBar>
