@@ -30,7 +30,11 @@ function LinkedInResume() {
         setLoading(false);
       } catch (error) {
         console.error("이력서 데이터를 가져오는 데 실패했습니다:", error);
-        setError("이력서 데이터를 불러오는 데 실패했습니다.");
+        if (error.response && error.response.status === 404) {
+          setError("저장된 이력서가 없습니다. 이력서를 작성해주세요!");
+        } else {
+          setError("이력서 데이터를 불러오는 데 실패했습니다.");
+        }
         setLoading(false);
       }
     };
@@ -55,7 +59,14 @@ function LinkedInResume() {
 
   if (error) {
     return (
-      <Box sx={{ maxWidth: 800, margin: "auto", padding: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
         <Typography variant="h6" color="error">
           {error}
         </Typography>

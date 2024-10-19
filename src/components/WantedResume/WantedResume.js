@@ -22,7 +22,11 @@ function WantedResume() {
         setLoading(false);
       } catch (error) {
         console.error("이력서 데이터를 가져오는 데 실패했습니다:", error);
-        setError("이력서 데이터를 불러오는 데 실패했습니다.");
+        if (error.response && error.response.status === 404) {
+          setError("저장된 이력서가 없습니다. 이력서를 작성해주세요!");
+        } else {
+          setError("이력서 데이터를 불러오는 데 실패했습니다.");
+        }
         setLoading(false);
       }
     };
@@ -47,7 +51,14 @@ function WantedResume() {
 
   if (error) {
     return (
-      <Box sx={{ maxWidth: 800, margin: "auto", padding: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
         <Typography variant="h6" color="error">
           {error}
         </Typography>
@@ -155,7 +166,7 @@ function WantedResume() {
           수상 및 기타
         </Typography>
         <Typography variant="body2" color="text.secondary" paragraph>
-          이 정보를 "수상 및 기타" 섹션에 복사하여 붙여넣으세요.
+          이 정보�� "수상 및 기타" 섹션에 복사하여 붙여넣으세요.
         </Typography>
         {resumeData.Certificates.map((cert, index) => (
           <Box key={index} sx={{ mb: 2 }}>

@@ -28,8 +28,13 @@ function ProgrammersResume() {
         const response = await api.get("/resumes/programmers");
         setResumeData(response.data);
         setLoading(false);
-      } catch (err) {
-        setError("이력서 데이터를 불러오는 데 실패했습니다.");
+      } catch (error) {
+        console.error("이력서 데이터를 가져오는 데 실패했습니다:", error);
+        if (error.response && error.response.status === 404) {
+          setError("저장된 이력서가 없습니다. 이력서를 작성해주세요!");
+        } else {
+          setError("이력서 데이터를 불러오는 데 실패했습니다.");
+        }
         setLoading(false);
       }
     };
@@ -42,7 +47,20 @@ function ProgrammersResume() {
   }
 
   if (error) {
-    return <Typography color="error">{error}</Typography>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Typography variant="h6" color="error">
+          {error}
+        </Typography>
+      </Box>
+    );
   }
 
   return (
