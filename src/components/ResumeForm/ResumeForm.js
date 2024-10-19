@@ -8,6 +8,11 @@ import {
   Button,
   Box,
   Snackbar,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import PersonalInfo from "./PersonalInfo";
@@ -41,6 +46,12 @@ function ResumeForm() {
     open: false,
     message: "",
     severity: "success",
+  });
+  const [confirmDialog, setConfirmDialog] = useState({
+    open: false,
+    title: "",
+    message: "",
+    onConfirm: null,
   });
 
   const fetchResumeData = async () => {
@@ -235,16 +246,23 @@ function ResumeForm() {
   };
 
   const handleLoadResume = async () => {
-    const isConfirmed = window.confirm(
-      "기존에 작성한 이력을 덮어씁니다. 실행하겠습니까?"
-    );
-    if (isConfirmed) {
-      const newValues = await fetchResumeData();
-      if (newValues && formikRef.current) {
-        formikRef.current.setValues(newValues);
-        localStorage.setItem("resumeData", JSON.stringify(newValues));
-      }
-    }
+    setConfirmDialog({
+      open: true,
+      title: "이력서 불러오기",
+      message: "기존에 작성한 이력을 덮어씁니다. 실행하겠습니까?",
+      onConfirm: async () => {
+        const newValues = await fetchResumeData();
+        if (newValues && formikRef.current) {
+          formikRef.current.setValues(newValues);
+          localStorage.setItem("resumeData", JSON.stringify(newValues));
+        }
+        setConfirmDialog({ ...confirmDialog, open: false });
+      },
+    });
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDialog({ ...confirmDialog, open: false });
   };
 
   const handleCloseSnackbar = (event, reason) => {
@@ -315,6 +333,25 @@ function ResumeForm() {
           {snackbar.message}
         </MuiAlert>
       </Snackbar>
+      <Dialog
+        open={confirmDialog.open}
+        onClose={handleCloseConfirmDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{confirmDialog.title}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {confirmDialog.message}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmDialog}>취소</Button>
+          <Button onClick={confirmDialog.onConfirm} autoFocus>
+            확인
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 }
