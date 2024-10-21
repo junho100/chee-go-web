@@ -16,9 +16,13 @@ function Footer() {
       }}
     >
       <Typography variant="body2" color="text.secondary" align="center">
-        관리자 이메일:{" "}
-        <Link href="mailto:bemodesty306@naver.com" color="inherit">
-          bemodesty306@naver.com
+        관리자에게 문의하기:{" "}
+        <Link
+          href="https://open.kakao.com/o/sxsadJVg"
+          target="_blank"
+          color="inherit"
+        >
+          https://open.kakao.com/o/sxsadJVg
         </Link>
       </Typography>
       <Typography

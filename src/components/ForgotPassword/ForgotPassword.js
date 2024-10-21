@@ -50,7 +50,7 @@ function ForgotPassword() {
     setSnackbar({
       open: true,
       message:
-        "준비 중입니다. 사이트 하단 이메일을 통해 관리자에게 문의 주세요.",
+        "준비 중입니다. 사이트 하단 오픈채팅방을 통해 관리자에게 문의 주세요.",
       severity: "info",
     });
   };
