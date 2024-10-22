@@ -188,39 +188,49 @@ function ResumeForm() {
         educations: savedData.educations.map((edu) => ({
           school_name: edu.schoolName,
           major_name: edu.majorName,
-          start_date: `${edu.startDate}-01T00:00:00Z`,
-          end_date: `${edu.endDate}-01T00:00:00Z`,
+          start_date: edu.startDate ? `${edu.startDate}-01T00:00:00Z` : null,
+          end_date: edu.endDate ? `${edu.endDate}-01T00:00:00Z` : null,
         })),
         projects: savedData.projects.map((project) => ({
           name: project.name,
-          summary: project.summary, // 한줄 요약 추가
-          start_date: `${project.startDate}-01T00:00:00Z`,
-          end_date: `${project.endDate}-01T00:00:00Z`,
+          summary: project.summary,
+          start_date: project.startDate
+            ? `${project.startDate}-01T00:00:00Z`
+            : null,
+          end_date: project.endDate ? `${project.endDate}-01T00:00:00Z` : null,
           content: project.content,
           github_url: project.githubUrl,
         })),
         activities: savedData.activities.map((activity) => ({
           name: activity.name,
           content: activity.content,
-          start_date: `${activity.startDate}-01T00:00:00Z`,
-          end_date: `${activity.endDate}-01T00:00:00Z`,
+          start_date: activity.startDate
+            ? `${activity.startDate}-01T00:00:00Z`
+            : null,
+          end_date: activity.endDate
+            ? `${activity.endDate}-01T00:00:00Z`
+            : null,
         })),
         certificates: savedData.certifications.map((cert) => ({
           name: cert.name,
           issued_by: cert.issuedBy,
-          issued_date: `${cert.issuedDate}-01T00:00:00Z`,
+          issued_date: cert.issuedDate
+            ? `${cert.issuedDate}-01T00:00:00Z`
+            : null,
         })),
         work_experiences: savedData.workExperiences.map((exp) => ({
           company_name: exp.companyName,
           department: exp.department,
           position: exp.position,
           job: exp.job,
-          start_date: `${exp.startDate}-01T00:00:00Z`,
-          end_date: `${exp.endDate}-01T00:00:00Z`,
+          start_date: exp.startDate ? `${exp.startDate}-01T00:00:00Z` : null,
+          end_date: exp.endDate ? `${exp.endDate}-01T00:00:00Z` : null,
           details: exp.workExperienceDetails.map((detail) => ({
             name: detail.name,
-            start_date: `${detail.startDate}-01T00:00:00Z`,
-            end_date: `${detail.endDate}-01T00:00:00Z`,
+            start_date: detail.startDate
+              ? `${detail.startDate}-01T00:00:00Z`
+              : null,
+            end_date: detail.endDate ? `${detail.endDate}-01T00:00:00Z` : null,
             content: detail.content,
           })),
         })),
