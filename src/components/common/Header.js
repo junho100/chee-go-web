@@ -15,6 +15,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
 import api from "../../utils/api";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 // 스타일링된 로그인 버튼 컴포넌트 생성
 const LoginButton = styled(Button)(({ theme }) => ({
@@ -66,6 +67,7 @@ function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [resumeAnchorEl, setResumeAnchorEl] = useState(null);
 
   // 로그인이 필요하지 않은 경로들을 정의합니다.
   const publicPaths = [
@@ -129,29 +131,45 @@ function Header() {
     setAnchorEl(null);
   };
 
-  const menuItems = [
-    { text: "서비스 소개", path: "/service-intro" },
-    { text: "이력서", path: "/resume" },
+  const handleResumeMenu = (event) => {
+    setResumeAnchorEl(event.currentTarget);
+  };
+
+  const handleResumeClose = () => {
+    setResumeAnchorEl(null);
+  };
+
+  // resumeItems 정의
+  const resumeItems = [
+    { text: "이력서 쓰기", path: "/resume" },
     { text: "링크드인 형식", path: "/linkedin" },
     { text: "프로그래머스 형식", path: "/programmers" },
     { text: "원티드 형식", path: "/wanted" },
   ];
 
   const renderMenuItems = () => {
-    const items = menuItems.map((item) => (
+    return [
       <MenuItem
-        key={item.path}
+        key="service-intro"
         onClick={handleClose}
         component={RouterLink}
-        to={item.path}
+        to="/service-intro"
       >
-        {item.text}
-      </MenuItem>
-    ));
-
-    if (isLoggedIn) {
-      items.push(
-        <Divider key="divider" sx={{ my: 1 }} />,
+        서비스 소개
+      </MenuItem>,
+      <Divider key="divider-1" />,
+      ...resumeItems.map((item) => (
+        <MenuItem
+          key={item.path}
+          onClick={handleClose}
+          component={RouterLink}
+          to={item.path}
+        >
+          {item.text}
+        </MenuItem>
+      )),
+      isLoggedIn && [
+        <Divider key="divider-2" />,
         <MenuItem
           key="logout"
           onClick={() => {
@@ -161,11 +179,9 @@ function Header() {
           sx={{ color: "error.main" }}
         >
           로그아웃
-        </MenuItem>
-      );
-    }
-
-    return items;
+        </MenuItem>,
+      ],
+    ].flat();
   };
 
   return (
@@ -212,16 +228,29 @@ function Header() {
             <IntroButton component={RouterLink} to="/service-intro">
               서비스 소개
             </IntroButton>
-            {menuItems.slice(1).map((item) => (
-              <Button
-                key={item.path}
-                color="inherit"
-                component={RouterLink}
-                to={item.path}
-              >
-                {item.text}
-              </Button>
-            ))}
+            <Button
+              color="inherit"
+              onClick={handleResumeMenu}
+              endIcon={<ExpandMoreIcon />}
+            >
+              이력서 관리하기
+            </Button>
+            <Menu
+              anchorEl={resumeAnchorEl}
+              open={Boolean(resumeAnchorEl)}
+              onClose={handleResumeClose}
+            >
+              {resumeItems.map((item) => (
+                <MenuItem
+                  key={item.path}
+                  onClick={handleResumeClose}
+                  component={RouterLink}
+                  to={item.path}
+                >
+                  {item.text}
+                </MenuItem>
+              ))}
+            </Menu>
             {isLoggedIn ? (
               <LogoutButton onClick={handleLogout} variant="contained">
                 로그아웃
