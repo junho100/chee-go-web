@@ -100,7 +100,7 @@ function Login() {
           textAlign: "center", // 텍스트 중앙 정렬
         }}
       >
-        이력서를 구직 플랫폼에 맞게 변환해드려요!
+        취업을 도와드려요!
       </Typography>
       <Paper elevation={3} sx={{ p: 4, width: "100%", maxWidth: 400 }}>
         <Typography variant="h4" align="center" gutterBottom>

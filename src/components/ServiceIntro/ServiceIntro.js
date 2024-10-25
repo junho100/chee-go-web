@@ -139,7 +139,8 @@ function ServiceIntro() {
           취Go 서비스 소개
         </Typography>
         <Typography variant="body1" paragraph>
-          취Go는 여러 구직 플랫폼에 맞게 이력서를 변환해주는 서비스에요.
+          취Go는 기술 면접을 위한 CS 강의와 여러 구직 플랫폼에 맞게 이력서
+          변환을 제공하는 서비스에요.
         </Typography>
         <Typography variant="body1" paragraph>
           구직 플랫폼마다 요구하는 정보와 형식이 다양해서 관리하기가 어려워요.
