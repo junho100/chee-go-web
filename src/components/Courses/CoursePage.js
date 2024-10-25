@@ -11,6 +11,7 @@ import {
   ListItemText,
   ListItemButton,
   Button,
+  Divider,
 } from "@mui/material";
 
 function CoursePage() {
@@ -49,7 +50,16 @@ function CoursePage() {
       >
         강의 목록으로 돌아가기
       </Button>
-      <Typography variant="h4" gutterBottom>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{
+          wordBreak: "break-word",
+          overflowWrap: "break-word",
+          hyphens: "auto",
+          mb: 3,
+        }}
+      >
         {course.title}
       </Typography>
       <Grid container spacing={4}>
@@ -65,23 +75,49 @@ function CoursePage() {
               allowFullScreen
             ></iframe>
           </Paper>
-          <Typography variant="h6" sx={{ mt: 2 }}>
+          <Typography variant="h6" sx={{ mt: 3, mb: 2, fontWeight: "bold" }}>
             {selectedVideo.title}
           </Typography>
-          <Typography variant="body1">{selectedVideo.description}</Typography>
+          <Typography
+            variant="body1"
+            sx={{ backgroundColor: "#f5f5f5", p: 2, borderRadius: 1 }}
+          >
+            {selectedVideo.description}
+          </Typography>
         </Grid>
         <Grid item xs={12} md={4}>
           <Paper elevation={3}>
-            <List>
-              {course.videos.map((video) => (
-                <ListItem key={video.id} disablePadding>
-                  <ListItemButton
-                    selected={video.id === selectedVideo.id}
-                    onClick={() => setSelectedVideo(video)}
+            <List sx={{ p: 0 }}>
+              {course.videos.map((video, index) => (
+                <React.Fragment key={video.id}>
+                  <ListItem
+                    disablePadding
+                    sx={{
+                      backgroundColor:
+                        video.id === selectedVideo.id ? "#e3f2fd" : "inherit",
+                      "&:hover": { backgroundColor: "#f5f5f5" },
+                    }}
                   >
-                    <ListItemText primary={video.title} />
-                  </ListItemButton>
-                </ListItem>
+                    <ListItemButton
+                      onClick={() => setSelectedVideo(video)}
+                      sx={{ py: 2 }}
+                    >
+                      <ListItemText
+                        primary={video.title}
+                        primaryTypographyProps={{
+                          sx: {
+                            fontWeight:
+                              video.id === selectedVideo.id ? "bold" : "normal",
+                            whiteSpace: "normal",
+                            wordBreak: "break-word",
+                            lineHeight: 1.2,
+                          },
+                        }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                  {index < course.videos.length - 1 && <Divider />}
+                </React.Fragment>
               ))}
             </List>
           </Paper>

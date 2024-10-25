@@ -33,7 +33,7 @@ function CoursesMain() {
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Typography variant="h4" gutterBottom>
-        CS 강의 목록
+        강의 목록
       </Typography>
       <Grid container spacing={4}>
         {courses.map((course) => (
