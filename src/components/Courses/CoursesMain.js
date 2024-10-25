@@ -49,7 +49,18 @@ function CoursesMain() {
                 <Typography gutterBottom variant="h5" component="div">
                   {course.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    height: 60,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: "vertical",
+                  }}
+                >
                   {course.description}
                 </Typography>
                 <Typography
