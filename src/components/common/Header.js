@@ -76,6 +76,7 @@ function Header() {
     "/forgot-password",
     "/reset-password",
     "/service-intro",
+    "/courses",
   ];
 
   const checkLoginStatus = async () => {
@@ -96,8 +97,11 @@ function Header() {
       }
     } else {
       setIsLoggedIn(false);
-      // 현재 경로가 publicPaths에 포함되지 않은 경우에만 리다이렉트합니다.
-      if (!publicPaths.includes(location.pathname)) {
+      // 현재 경로가 publicPaths에 포함되거나, courses/:courseID 형식인 경우 리다이렉트하지 않습니다.
+      if (
+        !publicPaths.includes(location.pathname) &&
+        !/^\/courses\/\w+$/.test(location.pathname)
+      ) {
         navigate("/");
       }
     }
@@ -147,6 +151,9 @@ function Header() {
     { text: "원티드 형식", path: "/wanted" },
   ];
 
+  // courseItems 추가
+  const courseItems = [{ text: "강의 듣기", path: "/courses" }];
+
   const renderMenuItems = () => {
     return [
       <MenuItem
@@ -168,8 +175,19 @@ function Header() {
           {item.text}
         </MenuItem>
       )),
+      <Divider key="divider-2" />,
+      ...courseItems.map((item) => (
+        <MenuItem
+          key={item.path}
+          onClick={handleClose}
+          component={RouterLink}
+          to={item.path}
+        >
+          {item.text}
+        </MenuItem>
+      )),
       isLoggedIn && [
-        <Divider key="divider-2" />,
+        <Divider key="divider-3" />,
         <MenuItem
           key="logout"
           onClick={() => {
@@ -228,6 +246,9 @@ function Header() {
             <IntroButton component={RouterLink} to="/service-intro">
               서비스 소개
             </IntroButton>
+            <Button color="inherit" component={RouterLink} to="/courses">
+              강의 듣기
+            </Button>
             <Button
               color="inherit"
               onClick={handleResumeMenu}
