@@ -41,6 +41,11 @@ function CoursePage() {
     return <Typography>강의를 불러오는 중...</Typography>;
   }
 
+  const handleVideoSelect = (video) => {
+    setSelectedVideo(video);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Button variant="contained" onClick={() => navigate("/")} sx={{ mb: 2 }}>
@@ -95,7 +100,7 @@ function CoursePage() {
                     }}
                   >
                     <ListItemButton
-                      onClick={() => setSelectedVideo(video)}
+                      onClick={() => handleVideoSelect(video)}
                       sx={{ py: 2 }}
                     >
                       <ListItemText
