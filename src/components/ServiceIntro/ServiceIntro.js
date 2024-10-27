@@ -1,10 +1,26 @@
 import React from "react";
 import { Box, Typography, Button, Container, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { styled } from "@mui/material/styles";
 import api from "../../utils/api";
 import pr1Image from "../../assets/pr1.png";
 import pr2Image from "../../assets/pr2.png";
 import pr3Image from "../../assets/pr3.png";
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  padding: theme.spacing(0.5, 1),
+  textTransform: "none",
+  fontSize: "1rem",
+  fontWeight: 500,
+  color: theme.palette.primary.main,
+  backgroundColor: "transparent",
+  border: "none",
+  boxShadow: "none",
+  "&:hover": {
+    backgroundColor: "transparent",
+    textDecoration: "underline",
+  },
+}));
 
 function ServiceIntro() {
   const navigate = useNavigate();
@@ -142,6 +158,11 @@ function ServiceIntro() {
           취Go는 기술 면접을 위한 CS 강의와 여러 구직 플랫폼에 맞게 이력서
           변환을 제공하는 서비스에요.
         </Typography>
+        <Box mt={1} mb={2}>
+          <StyledButton onClick={() => navigate("/")}>
+            회원가입 없이 강의 들으러 가기
+          </StyledButton>
+        </Box>
         <Typography variant="body1" paragraph>
           구직 플랫폼마다 요구하는 정보와 형식이 다양해서 관리하기가 어려워요.
         </Typography>
@@ -173,15 +194,10 @@ function ServiceIntro() {
         <Typography variant="body1" paragraph>
           취Go가 이를 자동으로 변환해주어 여러분의 시간과 노력을 절약해드릴게요!
         </Typography>
-        <Box mt={3}>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            onClick={handleResumeButtonClick}
-          >
+        <Box mt={2}>
+          <StyledButton onClick={handleResumeButtonClick}>
             이력서 작성하러 가기
-          </Button>
+          </StyledButton>
         </Box>
       </Paper>
     </Container>
