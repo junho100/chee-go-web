@@ -43,11 +43,7 @@ function CoursePage() {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Button
-        variant="contained"
-        onClick={() => navigate("/courses")}
-        sx={{ mb: 2 }}
-      >
+      <Button variant="contained" onClick={() => navigate("/")} sx={{ mb: 2 }}>
         강의 목록으로 돌아가기
       </Button>
       <Typography

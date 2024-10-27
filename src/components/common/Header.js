@@ -72,11 +72,11 @@ function Header() {
   // 로그인이 필요하지 않은 경로들을 정의합니다.
   const publicPaths = [
     "/",
+    "/login",
     "/signup",
     "/forgot-password",
     "/reset-password",
     "/service-intro",
-    "/courses",
   ];
 
   const checkLoginStatus = async () => {
@@ -102,7 +102,7 @@ function Header() {
         !publicPaths.includes(location.pathname) &&
         !/^\/courses\/\w+$/.test(location.pathname)
       ) {
-        navigate("/");
+        navigate("/login");
       }
     }
   };
@@ -152,7 +152,7 @@ function Header() {
   ];
 
   // courseItems 추가
-  const courseItems = [{ text: "강의 듣기", path: "/courses" }];
+  const courseItems = [{ text: "강의 듣기", path: "/" }];
 
   const renderMenuItems = () => {
     return [
@@ -246,7 +246,7 @@ function Header() {
             <IntroButton component={RouterLink} to="/service-intro">
               서비스 소개
             </IntroButton>
-            <Button color="inherit" component={RouterLink} to="/courses">
+            <Button color="inherit" component={RouterLink} to="/">
               강의 듣기
             </Button>
             <Button
@@ -277,7 +277,11 @@ function Header() {
                 로그아웃
               </LogoutButton>
             ) : (
-              <LoginButton component={RouterLink} to="/" variant="contained">
+              <LoginButton
+                component={RouterLink}
+                to="/login"
+                variant="contained"
+              >
                 로그인
               </LoginButton>
             )}

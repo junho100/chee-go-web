@@ -116,7 +116,8 @@ function SignUp() {
       );
 
       if (response.status === 200 || response.status === 201) {
-        navigate("/resume"); // 이력서 페이지로 이동
+        // 회원가입 성공 후 로그인 페이지로 이동
+        navigate("/login");
       }
     } catch (error) {
       console.error("회원가입 실패:", error);
@@ -209,7 +210,7 @@ function SignUp() {
             회원가입
           </Button>
         </form>
-        <Button fullWidth component={RouterLink} to="/" variant="text">
+        <Button fullWidth component={RouterLink} to="/login" variant="text">
           이미 계정이 있으신가요? 로그인
         </Button>
       </Paper>

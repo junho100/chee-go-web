@@ -37,7 +37,8 @@ function App() {
           <Header />
           <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
             <Routes>
-              <Route path="/" element={<Login />} />
+              <Route path="/" element={<CoursesMain />} />
+              <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/service-intro" element={<ServiceIntro />} />
               <Route path="/resume" element={<ResumeForm />} />
@@ -46,7 +47,6 @@ function App() {
               <Route path="/wanted" element={<WantedResume />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/courses" element={<CoursesMain />} />
               <Route path="/courses/:courseId" element={<CoursePage />} />
             </Routes>
           </Box>
