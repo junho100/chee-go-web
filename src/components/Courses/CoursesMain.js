@@ -35,6 +35,9 @@ function CoursesMain() {
       <Typography variant="h4" gutterBottom>
         강의 목록
       </Typography>
+      <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+        컴퓨터공학 학습을 위한 강의를 만나보세요!
+      </Typography>
       <Grid container spacing={4}>
         {courses.map((course) => (
           <Grid item key={course.id} xs={12} sm={6} md={4}>
