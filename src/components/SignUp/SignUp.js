@@ -35,7 +35,8 @@ function SignUp() {
   };
 
   const handleIdCheck = async () => {
-    if (id.length < 4) {
+    const trimmedId = id.trim();
+    if (trimmedId.length < 4) {
       setIdError("ID는 4자 이상이어야 합니다.");
       return;
     }
@@ -44,7 +45,7 @@ function SignUp() {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/users/check-id`,
         {
-          params: { id: id },
+          params: { id: trimmedId },
         }
       );
 
@@ -72,7 +73,7 @@ function SignUp() {
   };
 
   const handleEmailChange = (e) => {
-    const newEmail = e.target.value;
+    const newEmail = e.target.value.trim();
     setEmail(newEmail);
     if (!validateEmail(newEmail)) {
       setEmailError("유효한 이메일 주소를 입력해주세요.");
@@ -82,7 +83,7 @@ function SignUp() {
   };
 
   const handlePasswordChange = (e) => {
-    const newPassword = e.target.value;
+    const newPassword = e.target.value.trim();
     setPassword(newPassword);
     if (newPassword.length < 3) {
       setPasswordError("비밀번호는 최소 3글자 이상이어야 합니다.");
@@ -93,11 +94,21 @@ function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!id || !email || !password || !confirmPassword) {
+    const trimmedId = id.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+    const trimmedConfirmPassword = confirmPassword.trim();
+
+    if (
+      !trimmedId ||
+      !trimmedEmail ||
+      !trimmedPassword ||
+      !trimmedConfirmPassword
+    ) {
       setFormError("모든 필드를 입력해주세요.");
       return;
     }
-    if (password !== confirmPassword) {
+    if (trimmedPassword !== trimmedConfirmPassword) {
       setPasswordError("비밀번호가 일치하지 않습니다.");
       return;
     }
@@ -109,9 +120,9 @@ function SignUp() {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/users`,
         {
-          id,
-          password,
-          email,
+          id: trimmedId,
+          password: trimmedPassword,
+          email: trimmedEmail,
         }
       );
 
