@@ -12,13 +12,17 @@ import {
   ListItemButton,
   Button,
   Divider,
+  Checkbox,
+  Box,
 } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
 
 function CoursePage() {
   const { courseId } = useParams();
   const navigate = useNavigate();
   const [course, setCourse] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [completedVideos, setCompletedVideos] = useState(new Set());
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -37,9 +41,49 @@ function CoursePage() {
     fetchCourse();
   }, [courseId]);
 
+  useEffect(() => {
+    // 페이지 로드 시 localStorage에서 완료된 강의 목록을 불러옵니다
+    const loadCompletedVideos = () => {
+      const saved = localStorage.getItem(`completed_videos_${courseId}`);
+      if (saved) {
+        setCompletedVideos(new Set(JSON.parse(saved)));
+      }
+    };
+
+    loadCompletedVideos();
+  }, [courseId]);
+
+  // 체크박스 상태 변경 핸들러
+  const handleVideoCompletion = (videoId) => {
+    setCompletedVideos((prev) => {
+      const newCompleted = new Set(prev);
+      if (newCompleted.has(videoId)) {
+        newCompleted.delete(videoId);
+      } else {
+        newCompleted.add(videoId);
+      }
+
+      // localStorage에 저장
+      localStorage.setItem(
+        `completed_videos_${courseId}`,
+        JSON.stringify([...newCompleted])
+      );
+
+      return newCompleted;
+    });
+  };
+
+  // 수강률 계산 함수
+  const calculateProgress = () => {
+    if (!course || !course.videos || course.videos.length === 0) return 0;
+    return Math.round((completedVideos.size / course.videos.length) * 100);
+  };
+
   if (!course) {
     return <Typography>강의를 불러오는 중...</Typography>;
   }
+
+  const progress = calculateProgress();
 
   const handleVideoSelect = (video) => {
     setSelectedVideo(video);
@@ -63,6 +107,27 @@ function CoursePage() {
       >
         {course.title}
       </Typography>
+
+      {/* 수강률 표시 영역 추가 */}
+      <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
+        <Typography variant="h6" gutterBottom>
+          수강 진도율: {progress}%
+        </Typography>
+        <LinearProgress
+          variant="determinate"
+          value={progress}
+          sx={{
+            height: 10,
+            borderRadius: 5,
+            backgroundColor: "#e0e0e0",
+            "& .MuiLinearProgress-bar": {
+              backgroundColor: progress === 100 ? "#4caf50" : "#1976d2",
+              borderRadius: 5,
+            },
+          }}
+        />
+      </Paper>
+
       <Grid container spacing={4}>
         <Grid item xs={12} md={8}>
           <Paper elevation={3}>
@@ -104,16 +169,32 @@ function CoursePage() {
                       sx={{ py: 2 }}
                     >
                       <ListItemText
-                        primary={video.title}
-                        primaryTypographyProps={{
-                          sx: {
-                            fontWeight:
-                              video.id === selectedVideo.id ? "bold" : "normal",
-                            whiteSpace: "normal",
-                            wordBreak: "break-word",
-                            lineHeight: 1.2,
-                          },
-                        }}
+                        primary={
+                          <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <Checkbox
+                              checked={completedVideos.has(video.id)}
+                              onChange={(e) => {
+                                e.stopPropagation();
+                                handleVideoCompletion(video.id);
+                              }}
+                              onClick={(e) => e.stopPropagation()}
+                              sx={{ mr: 1 }}
+                            />
+                            <Typography
+                              sx={{
+                                fontWeight:
+                                  video.id === selectedVideo.id
+                                    ? "bold"
+                                    : "normal",
+                                whiteSpace: "normal",
+                                wordBreak: "break-word",
+                                lineHeight: 1.2,
+                              }}
+                            >
+                              {video.title}
+                            </Typography>
+                          </Box>
+                        }
                       />
                     </ListItemButton>
                   </ListItem>
