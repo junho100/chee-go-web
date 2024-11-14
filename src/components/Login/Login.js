@@ -62,7 +62,7 @@ function Login() {
         navigate("/service-intro"); // 여기를 /service-intro로 변경
       }
     } catch (error) {
-      if (error.response && error.response.status === 403) {
+      if (error.response && error.response.status === 401) {
         setError("로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
       } else {
         setError("로그인 중 오류가 발생했습니다. 나중에 다시 시도해주세요.");
