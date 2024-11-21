@@ -259,17 +259,17 @@ function Header() {
             </Button>
             <Button
               color="inherit"
-              onClick={handleResumeMenu}
-              endIcon={<ExpandMoreIcon />}
-            >
-              이력서 관리하기
-            </Button>
-            <Button
-              color="inherit"
               component={RouterLink}
               to="/telegram-settings"
             >
               공지사항 알림 받기
+            </Button>
+            <Button
+              color="inherit"
+              onClick={handleResumeMenu}
+              endIcon={<ExpandMoreIcon />}
+            >
+              이력서 관리하기
             </Button>
             <Menu
               anchorEl={resumeAnchorEl}
