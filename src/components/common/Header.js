@@ -186,6 +186,14 @@ function Header() {
           {item.text}
         </MenuItem>
       )),
+      <MenuItem
+        key="telegram-settings"
+        onClick={handleClose}
+        component={RouterLink}
+        to="/telegram-settings"
+      >
+        공지사항 알림 받기
+      </MenuItem>,
       isLoggedIn && [
         <Divider key="divider-3" />,
         <MenuItem
@@ -255,6 +263,13 @@ function Header() {
               endIcon={<ExpandMoreIcon />}
             >
               이력서 관리하기
+            </Button>
+            <Button
+              color="inherit"
+              component={RouterLink}
+              to="/telegram-settings"
+            >
+              공지사항 알림 받기
             </Button>
             <Menu
               anchorEl={resumeAnchorEl}
