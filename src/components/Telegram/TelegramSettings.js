@@ -189,12 +189,26 @@ function TelegramSettings() {
           <Typography variant="body2" color="text.secondary" gutterBottom>
             텔레그램 앱에서 'BotFather'를 검색하여 공식 봇을 찾습니다.
           </Typography>
+          <Box sx={{ my: 2, maxWidth: "300px" }}>
+            <img
+              src={require("../../assets/tele1.png")}
+              alt="BotFather 검색"
+              style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }}
+            />
+          </Box>
           <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
             2. 새로운 봇 생성
           </Typography>
           <Typography variant="body2" color="text.secondary" gutterBottom>
             /newbot 명령어를 입력하고 봇의 이름을 설정합니다.
           </Typography>
+          <Box sx={{ my: 2, maxWidth: "300px" }}>
+            <img
+              src={require("../../assets/tele2.png")}
+              alt="새로운 봇 생성"
+              style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }}
+            />
+          </Box>
           <StepNavigation canProceed={true} />
         </Box>
       ),
@@ -247,7 +261,8 @@ function TelegramSettings() {
           </Typography>
           <Typography variant="body2" color="text.secondary" gutterBottom>
             텔레그램에서 생성한 봇을 검색하여 대화를 시작하고 /start 명령어를
-            입력하세요.
+            입력하세요. <br /> 명령어 입력 후 아래 "CHAT ID 확인하기" 버튼을
+            눌러 Chat ID를 확인하세요.
           </Typography>
           {settings.botToken && (
             <Button
