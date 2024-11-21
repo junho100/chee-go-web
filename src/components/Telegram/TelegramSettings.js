@@ -345,7 +345,7 @@ function TelegramSettings() {
     <Box sx={{ maxWidth: 800, margin: "auto", padding: 3 }}>
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" gutterBottom>
-          텔레그램 알림 설정
+          공지사항 텔레그램으로 알림 받기
         </Typography>
 
         <Stepper activeStep={activeStep} orientation="vertical">
