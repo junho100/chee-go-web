@@ -14,7 +14,6 @@ import Footer from "./components/common/Footer";
 import ServiceIntro from "./components/ServiceIntro/ServiceIntro";
 import CoursesMain from "./components/Courses/CoursesMain";
 import CoursePage from "./components/Courses/CoursePage";
-import TelegramGuide from "./components/Telegram/TelegramGuide";
 import TelegramSettings from "./components/Telegram/TelegramSettings";
 
 const theme = createTheme({
@@ -50,7 +49,6 @@ function App() {
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/courses/:courseId" element={<CoursePage />} />
-              <Route path="/telegram-guide" element={<TelegramGuide />} />
               <Route path="/telegram-settings" element={<TelegramSettings />} />
             </Routes>
           </Box>
