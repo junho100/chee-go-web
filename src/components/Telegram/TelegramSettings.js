@@ -116,11 +116,12 @@ function TelegramSettings() {
   const handleValidateSettings = async () => {
     setIsValidating(true);
     try {
-      // API 연동 전 임시 로직
-      await new Promise((resolve) => setTimeout(resolve, 1500)); // 로딩 효과를 위한 지연
+      const response = await api.post("/notifications/validate-chat-id", {
+        token: settings.botToken,
+        chat_id: settings.chatId,
+      });
 
-      // 임시 검증 로직 (실제로는 API 호출로 대체)
-      if (settings.botToken.length > 0 && settings.chatId.length > 0) {
+      if (response.data.is_valid) {
         setSettings({ ...settings, isValidated: true });
         setSnackbar({
           open: true,
@@ -131,6 +132,7 @@ function TelegramSettings() {
         throw new Error("유효하지 않은 설정입니다.");
       }
     } catch (error) {
+      setSettings({ ...settings, isValidated: false });
       setSnackbar({
         open: true,
         message: error.message || "텔레그램 설정 검증에 실패했습니다.",
@@ -145,9 +147,11 @@ function TelegramSettings() {
   const handleValidateBotToken = async () => {
     setIsValidating(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await api.post("/notifications/validate-token", {
+        token: settings.botToken,
+      });
 
-      if (settings.botToken.length > 20) {
+      if (response.data.is_valid) {
         setSettings({ ...settings, botTokenValidated: true });
         setSnackbar({
           open: true,
