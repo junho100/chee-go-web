@@ -34,7 +34,6 @@ const mockNotification = {
   - 한국장학재단 고객센터: 1599-2000
   - 학교 학생지원과: 02-XXX-XXXX`,
   url: "https://example.com/notice/1",
-  createdAt: "2024-02-15T09:00:00",
 };
 
 function TelegramNotificationDetail() {
@@ -44,8 +43,6 @@ function TelegramNotificationDetail() {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
     });
   };
 
@@ -57,7 +54,7 @@ function TelegramNotificationDetail() {
             {mockNotification.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            작성일: {formatDate(mockNotification.createdAt)}
+            작성일: {formatDate(mockNotification.date)}
           </Typography>
         </Box>
 
