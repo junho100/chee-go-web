@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -14,6 +14,7 @@ import {
   StepContent,
   ButtonGroup,
 } from "@mui/material";
+import api from "../../utils/api";
 
 function TelegramSettings() {
   const [activeStep, setActiveStep] = useState(0);
@@ -31,6 +32,33 @@ function TelegramSettings() {
     severity: "success",
   });
   const [isValidating, setIsValidating] = useState(false);
+
+  useEffect(() => {
+    const fetchTelegramConfig = async () => {
+      try {
+        const response = await api.get("/notifications/config");
+        setSettings({
+          ...settings,
+          botToken: response.data.token,
+          chatId: response.data.chat_id,
+          keywords: response.data.keywords,
+          isValidated: true,
+          botTokenValidated: true,
+        });
+        setActiveStep(3); // 키워드 설정 단계로 이동
+      } catch (error) {
+        if (error.response?.status !== 404) {
+          setSnackbar({
+            open: true,
+            message: "설정 정보를 불러오는데 실패했습니다.",
+            severity: "error",
+          });
+        }
+      }
+    };
+
+    fetchTelegramConfig();
+  }, []);
 
   // API 연동 전 임시 저장 처리
   const handleSubmit = async (e) => {
