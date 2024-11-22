@@ -64,17 +64,23 @@ function TelegramSettings() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // API 연동 전 임시 로직
-      console.log("저장될 설정:", settings);
-      setSnackbar({
-        open: true,
-        message: "설정이 저장되었습니다. (테스트 메시지)",
-        severity: "success",
+      const response = await api.post("/notifications/config", {
+        token: settings.botToken,
+        chat_id: settings.chatId,
+        keywords: settings.keywords,
       });
+
+      if (response.status === 201) {
+        setSnackbar({
+          open: true,
+          message: "텔레그램 알림 설정이 저장되었습니다.",
+          severity: "success",
+        });
+      }
     } catch (error) {
       setSnackbar({
         open: true,
-        message: "설정 저장에 실패했습니다. (테스트 메시지)",
+        message: "텔레그램 알림 설정 저장에 실패했습니다.",
         severity: "error",
       });
     }
