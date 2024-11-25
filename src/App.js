@@ -52,7 +52,7 @@ function App() {
               <Route path="/courses/:courseId" element={<CoursePage />} />
               <Route path="/telegram-settings" element={<TelegramSettings />} />
               <Route
-                path="/telegram-notifications/:id"
+                path="/notification/:id"
                 element={<TelegramNotificationDetail />}
               />
             </Routes>
