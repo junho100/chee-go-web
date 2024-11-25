@@ -97,10 +97,11 @@ function Header() {
       }
     } else {
       setIsLoggedIn(false);
-      // 현재 경로가 publicPaths에 포함되거나, courses/:courseID 형식인 경우 리다이렉트하지 않습니다.
+
       if (
         !publicPaths.includes(location.pathname) &&
-        !/^\/courses\/\w+$/.test(location.pathname)
+        !/^\/courses\/\w+$/.test(location.pathname) &&
+        !/^\/notification\/[\w-]+$/.test(location.pathname)
       ) {
         navigate("/login");
       }
@@ -186,6 +187,14 @@ function Header() {
           {item.text}
         </MenuItem>
       )),
+      <MenuItem
+        key="telegram-settings"
+        onClick={handleClose}
+        component={RouterLink}
+        to="/telegram-settings"
+      >
+        공지사항 알림 받기
+      </MenuItem>,
       isLoggedIn && [
         <Divider key="divider-3" />,
         <MenuItem
@@ -248,6 +257,13 @@ function Header() {
             </IntroButton>
             <Button color="inherit" component={RouterLink} to="/">
               강의 듣기
+            </Button>
+            <Button
+              color="inherit"
+              component={RouterLink}
+              to="/telegram-settings"
+            >
+              공지사항 알림 받기
             </Button>
             <Button
               color="inherit"
