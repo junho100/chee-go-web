@@ -97,10 +97,11 @@ function Header() {
       }
     } else {
       setIsLoggedIn(false);
-      // 현재 경로가 publicPaths에 포함되거나, courses/:courseID 형식인 경우 리다이렉트하지 않습니다.
+
       if (
         !publicPaths.includes(location.pathname) &&
-        !/^\/courses\/\w+$/.test(location.pathname)
+        !/^\/courses\/\w+$/.test(location.pathname) &&
+        !/^\/notification\/[\w-]+$/.test(location.pathname)
       ) {
         navigate("/login");
       }
