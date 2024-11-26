@@ -354,7 +354,8 @@ function TelegramSettings() {
       content: (
         <Box>
           <Typography variant="body2" color="text.secondary" gutterBottom>
-            알림을 받고 싶은 키워드를 입력해주세요.
+            알림을 받고 싶은 키워드를 입력해주세요. 키워드가 제목에 포함된
+            공지사항을 알림으로 받을 수 있어요.
           </Typography>
           <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
             <TextField
