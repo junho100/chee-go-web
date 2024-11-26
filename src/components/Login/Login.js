@@ -100,7 +100,7 @@ function Login() {
           textAlign: "center", // 텍스트 중앙 정렬
         }}
       >
-        취업을 도와드려요!
+        편한 대학생활을 도와드려요!
       </Typography>
       <Paper elevation={3} sx={{ p: 4, width: "100%", maxWidth: 400 }}>
         <Typography variant="h4" align="center" gutterBottom>
