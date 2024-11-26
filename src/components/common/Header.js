@@ -195,8 +195,9 @@ function Header() {
       >
         공지사항 알림 받기
       </MenuItem>,
-      isLoggedIn && [
-        <Divider key="divider-3" />,
+      <Divider key="divider-3" />,
+      // 로그인 상태에 따라 다른 버튼 표시
+      isLoggedIn ? (
         <MenuItem
           key="logout"
           onClick={() => {
@@ -206,8 +207,18 @@ function Header() {
           sx={{ color: "error.main" }}
         >
           로그아웃
-        </MenuItem>,
-      ],
+        </MenuItem>
+      ) : (
+        <MenuItem
+          key="login"
+          onClick={handleClose}
+          component={RouterLink}
+          to="/login"
+          sx={{ color: "primary.main" }}
+        >
+          로그인
+        </MenuItem>
+      ),
     ].flat();
   };
 
