@@ -6,6 +6,7 @@ import api from "../../utils/api";
 import pr1Image from "../../assets/pr1.png";
 import pr2Image from "../../assets/pr2.png";
 import pr3Image from "../../assets/pr3.png";
+import pr3Jpeg from "../../assets/pr3.jpeg";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   padding: theme.spacing(0.5, 1),
@@ -129,12 +130,15 @@ function ServiceIntro() {
   };
 
   const imageStyle = {
-    width: "100%",
+    width: "80%",
     height: "auto",
     marginBottom: "8px",
     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
     border: "1px solid #e0e0e0",
     borderRadius: "4px",
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto",
   };
 
   const handleResumeButtonClick = async () => {
@@ -155,14 +159,46 @@ function ServiceIntro() {
           취Go 서비스 소개
         </Typography>
         <Typography variant="body1" paragraph>
-          취Go는 기술 면접을 위한 CS 강의와 여러 구직 플랫폼에 맞게 이력서
-          변환을 제공하는 서비스에요.
+          취Go는 대학 생활의 불편함을 해소해주는 서비스에요.
+        </Typography>
+
+        {/* 서비스 1: CS 강의 */}
+        <Typography variant="h6" sx={{ mt: 3, mb: 2 }}>
+          1. 기술 면접을 위한 CS 강의
+        </Typography>
+        <Typography variant="body1" paragraph>
+          전공 공부 예습, 복습에 활용할 수 있는 강의를 제공해요.
         </Typography>
         <Box mt={1} mb={2}>
           <StyledButton onClick={() => navigate("/")}>
             회원가입 없이 강의 들으러 가기
           </StyledButton>
         </Box>
+
+        {/* 서비스 2: 학교 공지사항 알림 */}
+        <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
+          2. 학교 공지사항 알림
+        </Typography>
+        <Typography variant="body1" paragraph>
+          중요한 학교 공지사항을 놓치지 않도록 실시간으로 알려드려요. 학사일정,
+          장학금, 취업 공고 등 필요한 정보를 바로 확인할 수 있어요.
+        </Typography>
+        <Box sx={{ mb: 3 }}>
+          <img src={pr3Jpeg} alt="공지사항 알림 예시" style={imageStyle} />
+          <Typography variant="caption" align="center" display="block">
+            공지사항 알림 예시
+          </Typography>
+        </Box>
+        <Box mt={1} mb={2}>
+          <StyledButton onClick={() => navigate("/telegram-settings")}>
+            공지사항 알림 받으러 가기
+          </StyledButton>
+        </Box>
+
+        {/* 서비스 3: 이력서 변환 */}
+        <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
+          3. 구직 플랫폼별 이력서 변환
+        </Typography>
         <Typography variant="body1" paragraph>
           구직 플랫폼마다 요구하는 정보와 형식이 다양해서 관리하기가 어려워요.
         </Typography>
