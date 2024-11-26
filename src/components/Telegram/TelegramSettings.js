@@ -260,6 +260,13 @@ function TelegramSettings() {
             BotFather가 제공한 HTTP API 토큰을 입력해주세요. 예시는 입력창을
             클릭하면 확인할 수 있어요.
           </Typography>
+          <Box sx={{ my: 2, maxWidth: "300px" }}>
+            <img
+              src={require("../../assets/tele3.png")}
+              alt="봇 토큰 예시"
+              style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }}
+            />
+          </Box>
           <TextField
             fullWidth
             label="텔레그램 봇 토큰"
