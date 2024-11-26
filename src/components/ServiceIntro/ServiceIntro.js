@@ -180,8 +180,9 @@ function ServiceIntro() {
           2. 학교 공지사항 알림
         </Typography>
         <Typography variant="body1" paragraph>
-          중요한 학교 공지사항을 놓치지 않도록 실시간으로 알려드려요. 학사일정,
-          장학금, 취업 공고 등 필요한 정보를 바로 확인할 수 있어요.
+          중요한 학교 공지사항을 놓치지 않도록 매일 오전 11시에 올라온
+          공지사항을 알려드려요. 학사일정, 장학금, 취업 공고 등 필요한 정보를
+          바로 확인할 수 있어요.
         </Typography>
         <Box sx={{ mb: 3 }}>
           <img src={pr3Jpeg} alt="공지사항 알림 예시" style={imageStyle} />
