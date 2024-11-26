@@ -73,7 +73,8 @@ function TelegramSettings() {
       if (response.status === 201) {
         setSnackbar({
           open: true,
-          message: "텔레그램 알림 설정이 저장되었습니다.",
+          message:
+            "텔레그램 알림 설정이 저장되었습니다. 매일 오전 11시에 텔레그램으로 공지사항 알림을 보내드릴게요!",
           severity: "success",
         });
       }
@@ -225,7 +226,7 @@ function TelegramSettings() {
             1. 텔레그램에서 'BotFather' 검색
           </Typography>
           <Typography variant="body2" color="text.secondary" gutterBottom>
-            텔레그램 앱에서 'BotFather'를 검색하여 공식 봇을 찾습니다.
+            텔레그램 앱에서 'BotFather'를 검색하여 공식 봇을 찾아주세요.
           </Typography>
           <Box sx={{ my: 2, maxWidth: "300px" }}>
             <img
@@ -238,7 +239,7 @@ function TelegramSettings() {
             2. 새로운 봇 생성
           </Typography>
           <Typography variant="body2" color="text.secondary" gutterBottom>
-            /newbot 명령어를 입력하고 봇의 이름을 설정합니다.
+            /newbot 명령어를 입력하고 봇의 이름을 설정해주세요.
           </Typography>
           <Box sx={{ my: 2, maxWidth: "300px" }}>
             <img
@@ -256,7 +257,8 @@ function TelegramSettings() {
       content: (
         <Box>
           <Typography variant="body2" color="text.secondary" gutterBottom>
-            BotFather가 제공한 HTTP API 토큰을 입력해주세요.
+            BotFather가 제공한 HTTP API 토큰을 입력해주세요. 예시는 입력창을
+            클릭하면 확인할 수 있어요.
           </Typography>
           <TextField
             fullWidth
@@ -299,8 +301,9 @@ function TelegramSettings() {
           </Typography>
           <Typography variant="body2" color="text.secondary" gutterBottom>
             텔레그램에서 생성한 봇을 검색하여 대화를 시작하고 /start 명령어를
-            입력하세요. <br /> 명령어 입력 후 아래 "CHAT ID 확인하기" 버튼을
-            눌러 Chat ID를 확인하세요.
+            입력해주세요. <br /> 명령어 입력 후 아래 "CHAT ID 확인하기" 버튼을
+            눌러 Chat ID를 확인하세요. <br /> Chat ID가 확인되지 않으신다면,
+            봇에게 메시지를 몇개 보내주신 후 다시 시도해주세요.
           </Typography>
           {settings.botToken && (
             <Button
@@ -384,6 +387,9 @@ function TelegramSettings() {
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" gutterBottom>
           공지사항 텔레그램으로 알림 받기
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+          현재는 홍익대학교 공지사항만 확인이 가능해요
         </Typography>
 
         <Stepper activeStep={activeStep} orientation="vertical">
