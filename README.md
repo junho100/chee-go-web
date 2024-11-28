@@ -1,70 +1,104 @@
-# Getting Started with Create React App
+# 취Go Web
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+대학생 대상 교육 및 편의 기능 지원 서비스 [취Go] 웹 레포지토리
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 주요 기능
 
-### `npm start`
+### 1. CS 강의
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- 컴퓨터공학 기초 지식을 학습할 수 있는 강의 제공
+- 강의 진도율 관리 기능
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 2. 학교 공지사항 알림
 
-### `npm test`
+- 텔레그램 봇을 통한 학교 공지사항 알림 서비스
+- 키워드 기반 필터링 기능
+- 매일 오전 11시 알림 발송
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 3. 이력서 변환
 
-### `npm run build`
+- 하나의 이력서 정보로 다양한 구직 플랫폼 형식 지원
+  - 링크드인
+  - 프로그래머스
+  - 원티드
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 기술 스택
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- React 18.3.1
+- Material-UI (MUI)
+- React Router DOM
+- Axios
+- Formik & Yup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 시작하기
 
-### `npm run eject`
+### 환경 설정
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. 의존성 설치
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm install
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. 환경 변수 설정
+   .env.local
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+REACT_APP_API_URL=SERVER_URL
+```
 
-## Learn More
+### 실행
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+개발 환경
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm run start-local
+```
 
-### Code Splitting
+프로덕션 환경
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm run start-prod
+```
 
-### Analyzing the Bundle Size
+### 빌드
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+개발 환경
 
-### Making a Progressive Web App
+```bash
+npm run build-local
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+프로덕션 환경
 
-### Advanced Configuration
+```bash
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 프로젝트 구조
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+src/
+├── components/                # 리액트 컴포넌트
+│   ├── common/               # 공통 컴포넌트
+│   │   ├── Header.js        # 네비게이션 헤더
+│   │   └── Footer.js        # 푸터
+│   ├── Courses/             # 강의 관련 컴포넌트
+│   │   ├── CoursesMain.js   # 강의 목록 페이지
+│   │   └── CoursePage.js    # 강의 상세 페이지
+│   ├── ResumeForm/          # 이력서 관련 컴포넌트
+│   │   ├── ResumeForm.js    # 이력서 작성 폼
+│   │   ├── PersonalInfo.js  # 개인 정보 섹션
+│   │   ├── Education.js     # 학력 섹션
+│   │   ├── Projects.js      # 프로젝트 섹션
+│   │   ├── Skills.js        # 기술 스택 섹션
+│   │   └── WorkExperience.js # 경력 섹션
+│   ├── Login/               # 로그인 관련 컴포넌트
+│   ├── SignUp/              # 회원가입 관련 컴포넌트
+│   └── Telegram/            # 텔레그램 알림 관련 컴포넌트
+├── App.js                    # 앱 메인 컴포넌트
+├── index.js                  # 앱 진입점
+└── index.css                 # 전역 스타일
+```
