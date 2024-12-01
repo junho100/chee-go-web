@@ -8,7 +8,9 @@ import {
   CardContent,
   CardMedia,
   Button,
+  Box,
 } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
 import { Link } from "react-router-dom";
 
 function CoursesMain() {
@@ -30,6 +32,15 @@ function CoursesMain() {
     fetchCourses();
   }, []);
 
+  // 완료된 비디오 개수 계산 함수로 변경
+  const getCompletedVideosCount = (courseId) => {
+    const savedVideos = localStorage.getItem(`completed_videos_${courseId}`);
+    if (!savedVideos) return null;
+
+    const completedCount = JSON.parse(savedVideos).length;
+    return completedCount > 0 ? completedCount : null;
+  };
+
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -41,14 +52,18 @@ function CoursesMain() {
       <Grid container spacing={4}>
         {courses.map((course) => (
           <Grid item key={course.id} xs={12} sm={6} md={4}>
-            <Card>
+            <Card
+              sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+            >
               <CardMedia
                 component="img"
                 height="140"
                 image={course.thumbnailUrl}
                 alt={course.title}
               />
-              <CardContent>
+              <CardContent
+                sx={{ flex: 1, display: "flex", flexDirection: "column" }}
+              >
                 <Typography gutterBottom variant="h5" component="div">
                   {course.title}
                 </Typography>
@@ -73,6 +88,40 @@ function CoursesMain() {
                 >
                   강사: {course.instructor}
                 </Typography>
+
+                <Box sx={{ flex: 1 }} />
+
+                {/* 완료된 비디오 개수 표시 영역 스타일 개선 */}
+                {(() => {
+                  const completedCount = getCompletedVideosCount(course.id);
+                  return (
+                    <Box sx={{ mt: 2, minHeight: "40px" }}>
+                      {completedCount && (
+                        <Box
+                          sx={{
+                            p: 1,
+                            backgroundColor: "#e3f2fd",
+                            borderRadius: 1,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 1,
+                          }}
+                        >
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              color: "#1976d2",
+                              fontWeight: "medium",
+                            }}
+                          >
+                            완료한 강의: {completedCount}개
+                          </Typography>
+                        </Box>
+                      )}
+                    </Box>
+                  );
+                })()}
+
                 <Button
                   component={Link}
                   to={`/courses/${course.id}`}
