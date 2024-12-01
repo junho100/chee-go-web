@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -23,6 +23,8 @@ function CoursePage() {
   const [course, setCourse] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [completedVideos, setCompletedVideos] = useState(new Set());
+  const playerRef = useRef(null);
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -31,7 +33,10 @@ function CoursePage() {
           `${process.env.REACT_APP_API_URL}/lectures/${courseId}`
         );
         setCourse(response.data);
-        setSelectedVideo(response.data.videos[0]);
+        if (response.data.videos && response.data.videos.length > 0) {
+          setSelectedVideo(response.data.videos[0]);
+          setIsPlayerReady(true);
+        }
       } catch (error) {
         console.error("강의 데이터를 불러오는 중 오류가 발생했습니다:", error);
         // 오류 처리 로직 추가 (예: 사용자에게 오류 메시지 표시 또는 강의 목록 페이지로 리다이렉트)
@@ -79,16 +84,73 @@ function CoursePage() {
     return Math.round((completedVideos.size / course.videos.length) * 100);
   };
 
+  useEffect(() => {
+    if (!isPlayerReady || !selectedVideo) return;
+
+    const initializeYouTubePlayer = () => {
+      if (!window.YT) {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName("script")[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      }
+
+      const initPlayer = () => {
+        if (playerRef.current) {
+          playerRef.current.destroy();
+        }
+
+        playerRef.current = new window.YT.Player("youtube-player", {
+          height: "100%",
+          width: "100%",
+          videoId: selectedVideo.youtubeId,
+          playerVars: {
+            autoplay: 0,
+            rel: 0,
+          },
+          events: {
+            onReady: (event) => {
+              playerRef.current = event.target;
+            },
+            onStateChange: (event) => {
+              if (event.data === 0) {
+                handleVideoCompletion(selectedVideo.id);
+              }
+            },
+          },
+        });
+      };
+
+      if (window.YT && window.YT.Player) {
+        initPlayer();
+      } else {
+        window.onYouTubeIframeAPIReady = initPlayer;
+      }
+    };
+
+    initializeYouTubePlayer();
+
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.destroy();
+      }
+    };
+  }, [selectedVideo, isPlayerReady]);
+
+  // 비디오 선택 핸들러 수정
+  const handleVideoSelect = (video) => {
+    setSelectedVideo(video);
+    if (playerRef.current?.loadVideoById) {
+      playerRef.current.loadVideoById(video.youtubeId);
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (!course) {
     return <Typography>강의를 불러오는 중...</Typography>;
   }
 
   const progress = calculateProgress();
-
-  const handleVideoSelect = (video) => {
-    setSelectedVideo(video);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -131,15 +193,26 @@ function CoursePage() {
       <Grid container spacing={4}>
         <Grid item xs={12} md={8}>
           <Paper elevation={3}>
-            <iframe
-              width="100%"
-              height="480"
-              src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}`}
-              title={selectedVideo.title}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            <Box
+              sx={{
+                position: "relative",
+                paddingTop: "56.25%", // 16:9 비율
+                width: "100%",
+                overflow: "hidden",
+              }}
+            >
+              <Box
+                id="youtube-player"
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
+                }}
+              />
+            </Box>
           </Paper>
           <Typography variant="h6" sx={{ mt: 3, mb: 2, fontWeight: "bold" }}>
             {selectedVideo.title}
