@@ -15,7 +15,8 @@ import ServiceIntro from "./components/ServiceIntro/ServiceIntro";
 import CoursesMain from "./components/Courses/CoursesMain";
 import CoursePage from "./components/Courses/CoursePage";
 import TelegramSettings from "./components/Telegram/TelegramSettings";
-import TelegramNotificationDetail from "./components/Telegram/TelegramNotificationDetail";
+import NotificationDetail from "./components/Notification/NotificationDetail";
+import DiscordSettings from "./components/Discord/DiscordSettings";
 
 const theme = createTheme({
   palette: {
@@ -53,7 +54,16 @@ function App() {
               <Route path="/telegram-settings" element={<TelegramSettings />} />
               <Route
                 path="/notification/:id"
-                element={<TelegramNotificationDetail />}
+                element={<NotificationDetail />}
+              />
+              <Route path="/discord-settings" element={<DiscordSettings />} />
+              <Route
+                path="/notifications/telegram"
+                element={<TelegramSettings />}
+              />
+              <Route
+                path="/notifications/discord"
+                element={<DiscordSettings />}
               />
             </Routes>
           </Box>

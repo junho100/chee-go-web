@@ -11,6 +11,7 @@ import {
   useMediaQuery,
   useTheme,
   Divider,
+  Container,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
@@ -60,6 +61,11 @@ const IntroButton = styled(Button)({
   textTransform: "none", // 대문자 변환 방지
 });
 
+const notificationItems = [
+  { text: "텔레그램 알림 설정", path: "/telegram-settings" },
+  { text: "디스코드 알림 설정", path: "/discord-settings" },
+];
+
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -68,6 +74,7 @@ function Header() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [resumeAnchorEl, setResumeAnchorEl] = useState(null);
+  const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
 
   // 로그인이 필요하지 않은 경로들을 정의합니다.
   const publicPaths = [
@@ -142,6 +149,14 @@ function Header() {
 
   const handleResumeClose = () => {
     setResumeAnchorEl(null);
+  };
+
+  const handleNotificationClick = (event) => {
+    setNotificationAnchorEl(event.currentTarget);
+  };
+
+  const handleNotificationClose = () => {
+    setNotificationAnchorEl(null);
   };
 
   // resumeItems 정의
@@ -224,97 +239,121 @@ function Header() {
 
   return (
     <AppBar position="static">
-      <Toolbar>
-        <Typography
-          variant="h6"
-          component={RouterLink}
-          to="/"
-          sx={{ textDecoration: "none", color: "inherit", flexGrow: 1 }}
-        >
-          취Go
-        </Typography>
-        {isMobile ? (
-          <>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={handleMenu}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              {renderMenuItems()}
-            </Menu>
-          </>
-        ) : (
-          <>
-            <IntroButton component={RouterLink} to="/service-intro">
-              서비스 소개
-            </IntroButton>
-            <Button color="inherit" component={RouterLink} to="/">
-              강의 듣기
-            </Button>
-            <Button
-              color="inherit"
-              component={RouterLink}
-              to="/telegram-settings"
-            >
-              공지사항 알림 받기
-            </Button>
-            <Button
-              color="inherit"
-              onClick={handleResumeMenu}
-              endIcon={<ExpandMoreIcon />}
-            >
-              이력서 관리하기
-            </Button>
-            <Menu
-              anchorEl={resumeAnchorEl}
-              open={Boolean(resumeAnchorEl)}
-              onClose={handleResumeClose}
-            >
-              {resumeItems.map((item) => (
-                <MenuItem
-                  key={item.path}
-                  onClick={handleResumeClose}
-                  component={RouterLink}
-                  to={item.path}
-                >
-                  {item.text}
-                </MenuItem>
-              ))}
-            </Menu>
-            {isLoggedIn ? (
-              <LogoutButton onClick={handleLogout} variant="contained">
-                로그아웃
-              </LogoutButton>
-            ) : (
-              <LoginButton
-                component={RouterLink}
-                to="/login"
-                variant="contained"
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <Typography
+            variant="h6"
+            component={RouterLink}
+            to="/"
+            sx={{ textDecoration: "none", color: "inherit", flexGrow: 1 }}
+          >
+            취Go
+          </Typography>
+          {isMobile ? (
+            <>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={handleMenu}
               >
-                로그인
-              </LoginButton>
-            )}
-          </>
-        )}
-      </Toolbar>
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {renderMenuItems()}
+              </Menu>
+            </>
+          ) : (
+            <>
+              <IntroButton component={RouterLink} to="/service-intro">
+                서비스 소개
+              </IntroButton>
+              <Button color="inherit" component={RouterLink} to="/">
+                강의 듣기
+              </Button>
+              <Button
+                color="inherit"
+                onClick={handleNotificationClick}
+                endIcon={<ExpandMoreIcon />}
+              >
+                공지사항 알림 받기
+              </Button>
+              <Button
+                color="inherit"
+                onClick={handleResumeMenu}
+                endIcon={<ExpandMoreIcon />}
+              >
+                이력서 관리하기
+              </Button>
+              <Menu
+                anchorEl={resumeAnchorEl}
+                open={Boolean(resumeAnchorEl)}
+                onClose={handleResumeClose}
+              >
+                {resumeItems.map((item) => (
+                  <MenuItem
+                    key={item.path}
+                    onClick={handleResumeClose}
+                    component={RouterLink}
+                    to={item.path}
+                  >
+                    {item.text}
+                  </MenuItem>
+                ))}
+              </Menu>
+              <Menu
+                anchorEl={notificationAnchorEl}
+                open={Boolean(notificationAnchorEl)}
+                onClose={handleNotificationClose}
+              >
+                <MenuItem
+                  onClick={() => {
+                    navigate("/notifications/telegram");
+                    handleNotificationClose();
+                  }}
+                >
+                  텔레그램으로 받기
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    navigate("/notifications/discord");
+                    handleNotificationClose();
+                  }}
+                >
+                  디스코드로 받기
+                </MenuItem>
+              </Menu>
+              {isLoggedIn ? (
+                <LogoutButton onClick={handleLogout} variant="contained">
+                  로그아웃
+                </LogoutButton>
+              ) : (
+                <LoginButton
+                  component={RouterLink}
+                  to="/login"
+                  variant="contained"
+                >
+                  로그인
+                </LoginButton>
+              )}
+            </>
+          )}
+        </Toolbar>
+      </Container>
     </AppBar>
   );
 }
