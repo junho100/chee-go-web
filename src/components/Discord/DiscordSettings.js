@@ -16,16 +16,6 @@ import {
 import StepNavigation from "../common/StepNavigation";
 import api from "../../utils/api";
 
-// Mock API responses
-const mockValidateResponse = {
-  is_valid: true,
-};
-
-const mockConfigResponse = {
-  user_id: "",
-  keywords: [],
-};
-
 function DiscordSettings() {
   const [activeStep, setActiveStep] = useState(0);
   const [settings, setSettings] = useState({
@@ -44,25 +34,25 @@ function DiscordSettings() {
   useEffect(() => {
     const fetchDiscordConfig = async () => {
       try {
-        // Mock API call
-        const response = { data: mockConfigResponse };
-
-        setSettings((prevSettings) => ({
-          ...prevSettings,
-          userId: response.data.user_id,
-          keywords: response.data.keywords,
-          isValidated: Boolean(response.data.user_id),
+        const response = await api.get("/notifications/config");
+        setSettings((prev) => ({
+          ...prev,
+          userId: response.data.discord_client_id || "",
+          keywords: response.data.keywords || [],
+          isValidated: Boolean(response.data.discord_client_id),
         }));
 
-        if (response.data.user_id) {
+        if (response.data.discord_client_id) {
           setActiveStep(2);
         }
       } catch (error) {
-        setSnackbar({
-          open: true,
-          message: "설정 정보를 불러오는데 실패했습니다.",
-          severity: "error",
-        });
+        if (error.response?.status !== 404) {
+          setSnackbar({
+            open: true,
+            message: "설정 정보를 불러오는데 실패했습니다.",
+            severity: "error",
+          });
+        }
       }
     };
 
@@ -127,17 +117,56 @@ function DiscordSettings() {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  // 스텝 네비게이션 렌더링 함수
+  // 설정 저장 처리
+  const handleSubmit = async () => {
+    try {
+      // 먼저 현재 설정을 가져옴
+      const currentConfig = await api.get("/notifications/config");
+
+      // 현재 설정에 디스코드 설정을 업데이트
+      const response = await api.post("/notifications/config", {
+        discord_client_id: settings.userId,
+        telegram_chat_id: currentConfig.data.telegram_chat_id || "", // 기존 텔레그램 설정 유지
+        keywords: settings.keywords,
+      });
+
+      if (response.status === 201) {
+        setSnackbar({
+          open: true,
+          message:
+            "디스코드 알림 설정이 저장되었습니다. 매일 오전 11시에 디스코드로 공지사항 알림을 보내드릴게요!",
+          severity: "success",
+        });
+      }
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: "디스코드 알림 설정 저장에 실패했습니다.",
+        severity: "error",
+      });
+    }
+  };
+
+  // renderStepNavigation 함수 수정
   const renderStepNavigation = (canProceed, customButtons = null) => (
     <StepNavigation
       activeStep={activeStep}
-      handleNext={() => setActiveStep((prev) => prev + 1)}
+      handleNext={() => {
+        if (activeStep === stepLabels.length - 1) {
+          handleSubmit();
+        } else {
+          setActiveStep((prev) => prev + 1);
+        }
+      }}
       handleBack={() => setActiveStep((prev) => prev - 1)}
-      stepsLength={3} // steps 배열 대신 길이만 전달
+      stepsLength={stepLabels.length}
       canProceed={canProceed}
       customButtons={customButtons}
     />
   );
+
+  // 스텝 레이블 배열을 상단으로 이동
+  const stepLabels = ["디스코드 서버 참여", "사용자 ID 설정", "키워드 설정"];
 
   // 각 스텝의 컨텐츠를 렌더링하는 함수
   const renderStepContent = (step) => {
@@ -263,9 +292,6 @@ function DiscordSettings() {
         return null;
     }
   };
-
-  // 스텝 레이블 배열
-  const stepLabels = ["디스코드 서버 참여", "사용자 ID 설정", "키워드 설정"];
 
   return (
     <Box sx={{ maxWidth: 800, margin: "auto", padding: 3 }}>

@@ -24,7 +24,7 @@ const StepNavigation = ({
         <Button
           variant="contained"
           onClick={handleNext}
-          disabled={!canProceed || activeStep === stepsLength - 1}
+          disabled={!canProceed}
           sx={{ flex: 1 }}
         >
           {activeStep === stepsLength - 1 ? "완료" : "다음"}
