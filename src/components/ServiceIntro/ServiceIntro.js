@@ -190,9 +190,12 @@ function ServiceIntro() {
             공지사항 알림 예시
           </Typography>
         </Box>
-        <Box mt={1} mb={2}>
-          <StyledButton onClick={() => navigate("/telegram-settings")}>
-            공지사항 알림 받으러 가기
+        <Box mt={1} mb={2} sx={{ display: "flex", gap: 2 }}>
+          <StyledButton onClick={() => navigate("/notifications/discord")}>
+            디스코드로 알림 받기
+          </StyledButton>
+          <StyledButton onClick={() => navigate("/notifications/telegram")}>
+            텔레그램으로 알림 받기
           </StyledButton>
         </Box>
 
