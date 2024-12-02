@@ -165,6 +165,17 @@ function DiscordSettings() {
             <Typography variant="body2" color="text.secondary" gutterBottom>
               디스코드 설정 → 앱 설정 → 고급 → 개발자 모드를 활성화해주세요.
             </Typography>
+            <Box sx={{ my: 2, maxWidth: "300px" }}>
+              <img
+                src={require("../../assets/dis1.png")}
+                alt="개발자 모드 활성화"
+                style={{
+                  maxWidth: "100%",
+                  height: "auto",
+                  borderRadius: "8px",
+                }}
+              />
+            </Box>
             <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
               2. 사용자 ID 확인
             </Typography>
@@ -172,6 +183,17 @@ function DiscordSettings() {
               프로필을 우클릭하고 "ID 복사하기"를 선택하여 사용자 ID를
               복사해주세요.
             </Typography>
+            <Box sx={{ my: 2, maxWidth: "300px" }}>
+              <img
+                src={require("../../assets/dis2.png")}
+                alt="사용자 ID 확인"
+                style={{
+                  maxWidth: "100%",
+                  height: "auto",
+                  borderRadius: "8px",
+                }}
+              />
+            </Box>
             <TextField
               fullWidth
               label="디스코드 사용자 ID"
