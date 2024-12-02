@@ -39,13 +39,16 @@ function TelegramSettings() {
         const response = await api.get("/notifications/config");
         setSettings((prev) => ({
           ...prev,
-          botToken: response.data.token,
-          chatId: response.data.chat_id,
-          keywords: response.data.keywords,
-          isValidated: true,
-          botTokenValidated: true,
+          botToken: response.data.token || "",
+          chatId: response.data.chat_id || "",
+          keywords: response.data.keywords || [],
+          isValidated: Boolean(response.data.chat_id),
+          botTokenValidated: Boolean(response.data.token),
         }));
-        setActiveStep(3);
+
+        if (response.data.chat_id && response.data.token) {
+          setActiveStep(3);
+        }
       } catch (error) {
         if (error.response?.status !== 404) {
           setSnackbar({
@@ -63,12 +66,11 @@ function TelegramSettings() {
   // API 연동 전 임시 저장 처리
   const handleSubmit = async () => {
     try {
-      // 먼저 현재 설정을 가져옴
       const currentConfig = await api.get("/notifications/config");
 
-      // 현재 설정에 텔레그램 설정을 업데이트
       const response = await api.post("/notifications/config", {
         telegram_chat_id: settings.chatId,
+        telegram_token: settings.botToken,
         discord_client_id: currentConfig.data.discord_client_id || "", // 기존 디스코드 설정 유지
         keywords: settings.keywords,
       });

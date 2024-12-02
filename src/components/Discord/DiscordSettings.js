@@ -120,13 +120,12 @@ function DiscordSettings() {
   // 설정 저장 처리
   const handleSubmit = async () => {
     try {
-      // 먼저 현재 설정을 가져옴
       const currentConfig = await api.get("/notifications/config");
 
-      // 현재 설정에 디스코드 설정을 업데이트
       const response = await api.post("/notifications/config", {
         discord_client_id: settings.userId,
-        telegram_chat_id: currentConfig.data.telegram_chat_id || "", // 기존 텔레그램 설정 유지
+        telegram_chat_id: currentConfig.data.chat_id || "",
+        telegram_token: currentConfig.data.token || "",
         keywords: settings.keywords,
       });
 
