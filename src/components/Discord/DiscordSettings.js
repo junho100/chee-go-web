@@ -124,8 +124,8 @@ function DiscordSettings() {
 
       const response = await api.post("/notifications/config", {
         discord_client_id: settings.userId,
-        telegram_chat_id: currentConfig.data.chat_id || "",
-        telegram_token: currentConfig.data.token || "",
+        token: currentConfig.data.token || "", // telegram_token -> token
+        chat_id: currentConfig.data.chat_id || "", // telegram_chat_id -> chat_id
         keywords: settings.keywords,
       });
 

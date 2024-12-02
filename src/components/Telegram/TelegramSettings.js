@@ -69,9 +69,9 @@ function TelegramSettings() {
       const currentConfig = await api.get("/notifications/config");
 
       const response = await api.post("/notifications/config", {
-        telegram_chat_id: settings.chatId,
-        telegram_token: settings.botToken,
-        discord_client_id: currentConfig.data.discord_client_id || "", // 기존 디스코드 설정 유지
+        token: settings.botToken,
+        chat_id: settings.chatId,
+        discord_client_id: currentConfig.data.discord_client_id || "",
         keywords: settings.keywords,
       });
 
