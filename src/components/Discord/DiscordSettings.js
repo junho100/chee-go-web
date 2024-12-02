@@ -14,6 +14,7 @@ import {
   StepContent,
 } from "@mui/material";
 import StepNavigation from "../common/StepNavigation";
+import api from "../../utils/api";
 
 // Mock API responses
 const mockValidateResponse = {
@@ -71,9 +72,12 @@ function DiscordSettings() {
   const handleValidateSettings = async () => {
     setIsValidating(true);
     try {
-      // Mock API call
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 검증 중인 것처럼 보이게 하기 위한 지연
-      const response = { data: mockValidateResponse };
+      const response = await api.post(
+        "/notifications/validate-discord-client-id",
+        {
+          client_id: settings.userId,
+        }
+      );
 
       if (response.data.is_valid) {
         setSettings({ ...settings, isValidated: true });
@@ -82,12 +86,14 @@ function DiscordSettings() {
           message: "디스코드 설정이 유효합니다.",
           severity: "success",
         });
+      } else {
+        throw new Error("유효하지 않은 사용자 ID입니다.");
       }
     } catch (error) {
       setSettings({ ...settings, isValidated: false });
       setSnackbar({
         open: true,
-        message: "디스코드 설정 검증에 실패했습니다.",
+        message: error.message || "디스코드 설정 검증에 실패했습니다.",
         severity: "error",
       });
     } finally {
