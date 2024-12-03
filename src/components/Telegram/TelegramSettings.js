@@ -66,7 +66,15 @@ function TelegramSettings() {
   // API 연동 전 임시 저장 처리
   const handleSubmit = async () => {
     try {
-      const currentConfig = await api.get("/notifications/config");
+      let currentConfig = { data: {} };
+      try {
+        currentConfig = await api.get("/notifications/config");
+      } catch (error) {
+        // 404 에러는 무시하고 빈 config로 진행
+        if (error.response?.status !== 404) {
+          throw error;
+        }
+      }
 
       const response = await api.post("/notifications/config", {
         token: settings.botToken,

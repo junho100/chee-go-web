@@ -120,12 +120,20 @@ function DiscordSettings() {
   // 설정 저장 처리
   const handleSubmit = async () => {
     try {
-      const currentConfig = await api.get("/notifications/config");
+      let currentConfig = { data: {} };
+      try {
+        currentConfig = await api.get("/notifications/config");
+      } catch (error) {
+        // 404 에러는 무시하고 빈 config로 진행
+        if (error.response?.status !== 404) {
+          throw error;
+        }
+      }
 
       const response = await api.post("/notifications/config", {
         discord_client_id: settings.userId,
-        token: currentConfig.data.token || "", // telegram_token -> token
-        chat_id: currentConfig.data.chat_id || "", // telegram_chat_id -> chat_id
+        token: currentConfig.data.token || "",
+        chat_id: currentConfig.data.chat_id || "",
         keywords: settings.keywords,
       });
 
