@@ -61,11 +61,6 @@ const IntroButton = styled(Button)({
   textTransform: "none", // 대문자 변환 방지
 });
 
-const notificationItems = [
-  { text: "텔레그램 알림 설정", path: "/telegram-settings" },
-  { text: "디스코드 알림 설정", path: "/discord-settings" },
-];
-
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -203,12 +198,22 @@ function Header() {
         </MenuItem>
       )),
       <MenuItem
-        key="telegram-settings"
-        onClick={handleClose}
-        component={RouterLink}
-        to="/telegram-settings"
+        key="telegram"
+        onClick={() => {
+          handleClose();
+          navigate("/notifications/telegram");
+        }}
       >
-        공지사항 알림 받기
+        텔레그램으로 받기
+      </MenuItem>,
+      <MenuItem
+        key="discord"
+        onClick={() => {
+          handleClose();
+          navigate("/notifications/discord");
+        }}
+      >
+        디스코드로 받기
       </MenuItem>,
       <Divider key="divider-3" />,
       // 로그인 상태에 따라 다른 버튼 표시
