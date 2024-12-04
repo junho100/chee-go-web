@@ -219,10 +219,10 @@ function DiscordSettings() {
               />
             </Box>
             <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
-              2. 사용자 ID 확인
+              2. 자신의 사용자 ID 확인
             </Typography>
             <Typography variant="body2" color="text.secondary" gutterBottom>
-              프로필을 우클릭하고 "ID 복사하기"를 선택하여 사용자 ID를
+              자신의 프로필을 우클릭하고 "ID 복사하기"를 선택하여 사용자 ID를
               복사해주세요.
             </Typography>
             <Box sx={{ my: 2, maxWidth: "300px" }}>
