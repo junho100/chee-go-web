@@ -217,6 +217,14 @@ function DiscordSettings() {
                   borderRadius: "8px",
                 }}
               />
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                display="block"
+                sx={{ mt: 0.5 }}
+              >
+                예시: 디스코드 설정에서 개발자 모드를 활성화하는 화면
+              </Typography>
             </Box>
             <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
               2. 자신의 사용자 ID 확인
@@ -235,7 +243,19 @@ function DiscordSettings() {
                   borderRadius: "8px",
                 }}
               />
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                display="block"
+                sx={{ mt: 0.5 }}
+              >
+                예시: 프로필에서 사용자 ID를 복사하는 화면
+              </Typography>
             </Box>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              입력한 ID가 본인의 것인지 확인하기 위해 검증 과정에서 디스코드
+              메시지를 전송해요. 메시지가 정상적으로 수신되는지 확인해주세요.
+            </Typography>
             <TextField
               fullWidth
               label="디스코드 사용자 ID"
