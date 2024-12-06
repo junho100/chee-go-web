@@ -13,6 +13,11 @@ import {
   StepLabel,
   StepContent,
   ButtonGroup,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
 } from "@mui/material";
 import api from "../../utils/api";
 
@@ -32,6 +37,7 @@ function TelegramSettings() {
     severity: "success",
   });
   const [isValidating, setIsValidating] = useState(false);
+  const [unsubscribeDialog, setUnsubscribeDialog] = useState(false);
 
   useEffect(() => {
     const fetchTelegramConfig = async () => {
@@ -403,15 +409,84 @@ function TelegramSettings() {
     },
   ];
 
+  // handleUnsubscribe 함수 추가
+  const handleUnsubscribe = async () => {
+    setUnsubscribeDialog(false);
+    try {
+      let currentConfig = { data: {} };
+      try {
+        currentConfig = await api.get("/notifications/config");
+      } catch (error) {
+        // 404 에러는 무시하고 빈 config로 진행
+        if (error.response?.status !== 404) {
+          throw error;
+        }
+      }
+
+      const response = await api.post("/notifications/config", {
+        // 텔레그램 설정만 초기화
+        token: "",
+        chat_id: "",
+        // 기존 디스코드 설정 유지
+        discord_client_id: currentConfig.data.discord_client_id || "",
+        // 키워드는 디스코드가 활성화된 경우에만 유지
+        keywords: currentConfig.data.discord_client_id
+          ? currentConfig.data.keywords || []
+          : [],
+      });
+
+      if (response.status === 201) {
+        setSettings({
+          botToken: "",
+          chatId: "",
+          keywords: [],
+          isValidated: false,
+          botTokenValidated: false,
+        });
+        setActiveStep(0);
+        setSnackbar({
+          open: true,
+          message: "알림 설정이 해제되었습니다.",
+          severity: "success",
+        });
+      }
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: "알림 설정 해제에 실패했습니다.",
+        severity: "error",
+      });
+    }
+  };
+
   return (
     <Box sx={{ maxWidth: 800, margin: "auto", padding: 3 }}>
       <Paper elevation={3} sx={{ p: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          공지사항 텔레그램으로 알림 받기
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-          현재는 홍익대학교 공지사항만 확인이 가능해요
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 3,
+          }}
+        >
+          <div>
+            <Typography variant="h4" gutterBottom>
+              공지사항 텔레그램으로 알림 받기
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              현재는 홍익대학교 공지사항만 확인이 가능해요
+            </Typography>
+          </div>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => setUnsubscribeDialog(true)}
+            sx={{ height: "fit-content" }}
+          >
+            알림 받지 않기
+          </Button>
+        </Box>
 
         <Stepper activeStep={activeStep} orientation="vertical">
           {steps.map((step, index) => (
@@ -441,6 +516,24 @@ function TelegramSettings() {
           {snackbar.message}
         </Alert>
       </Snackbar>
+
+      <Dialog
+        open={unsubscribeDialog}
+        onClose={() => setUnsubscribeDialog(false)}
+      >
+        <DialogTitle>알림 설정 해제</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            정말 알림을 받지 않으시겠��니까?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setUnsubscribeDialog(false)}>취소</Button>
+          <Button onClick={handleUnsubscribe} color="error" autoFocus>
+            확인
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
