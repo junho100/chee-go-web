@@ -397,7 +397,7 @@ function TelegramSettings() {
               />
             ))}
           </Box>
-          <StepNavigation canProceed={settings.keywords.length > 0} />
+          <StepNavigation canProceed={true} />
         </Box>
       ),
     },

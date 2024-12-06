@@ -312,7 +312,7 @@ function DiscordSettings() {
                 />
               ))}
             </Box>
-            {renderStepNavigation(settings.keywords.length > 0)}
+            {renderStepNavigation(true)}
           </Box>
         );
       default:
