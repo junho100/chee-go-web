@@ -524,7 +524,7 @@ function TelegramSettings() {
         <DialogTitle>알림 설정 해제</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            정말 알림을 받지 않으시겠��니까?
+            정말 알림을 받지 않으시겠습니까?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
