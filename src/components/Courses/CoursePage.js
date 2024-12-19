@@ -107,6 +107,8 @@ function CoursePage() {
           playerVars: {
             autoplay: 0,
             rel: 0,
+            enablejsapi: 1,
+            origin: window.location.origin,
           },
           events: {
             onReady: (event) => {
