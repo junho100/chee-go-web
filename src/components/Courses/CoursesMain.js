@@ -9,12 +9,17 @@ import {
   CardMedia,
   Button,
   Box,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
-import LinearProgress from "@mui/material/LinearProgress";
 import { Link } from "react-router-dom";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function CoursesMain() {
   const [courses, setCourses] = useState([]);
+  const [mainExpanded, setMainExpanded] = useState("school");
+  const [gradeExpanded, setGradeExpanded] = useState(false);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -41,13 +46,34 @@ function CoursesMain() {
     return completedCount > 0 ? completedCount : null;
   };
 
-  return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        강의 목록
-      </Typography>
-      <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-        컴퓨터공학 학습을 위한 강의를 만나보세요!
+  // 강의 분류
+  const generalCourses = courses.filter((course) => !course.isForSchool);
+
+  // 학교 강의를 학년별로 분류
+  const schoolCoursesByGrade = courses
+    .filter((course) => course.isForSchool)
+    .reduce((acc, course) => {
+      const grade = course.targetGrade;
+      if (!acc[grade]) {
+        acc[grade] = [];
+      }
+      acc[grade].push(course);
+      return acc;
+    }, {});
+
+  // 강의 목록을 표시하는 컴포넌트
+  const CoursesList = ({ courses, title }) => (
+    <>
+      <Typography
+        variant="h6"
+        sx={{
+          mb: 2,
+          pl: 2,
+          borderLeft: "4px solid #1976d2",
+          color: "#1976d2",
+        }}
+      >
+        {title}
       </Typography>
       <Grid container spacing={4}>
         {courses.map((course) => (
@@ -135,6 +161,116 @@ function CoursesMain() {
           </Grid>
         ))}
       </Grid>
+    </>
+  );
+
+  const handleMainAccordionChange = (panel) => (event, isExpanded) => {
+    setMainExpanded(isExpanded ? panel : false);
+  };
+
+  const handleGradeAccordionChange = (grade) => (event, isExpanded) => {
+    setGradeExpanded(isExpanded ? grade : false);
+  };
+
+  return (
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{
+          fontWeight: "bold",
+          color: "#2c3e50",
+        }}
+      >
+        강의 목록
+      </Typography>
+      <Typography
+        variant="subtitle1"
+        color="text.secondary"
+        gutterBottom
+        sx={{ mb: 4 }}
+      >
+        컴퓨터공학 학습을 위한 강의를 만나보세요!
+      </Typography>
+
+      {/* 학교 강의 아코디언 */}
+      <Accordion
+        expanded={mainExpanded === "school"}
+        onChange={handleMainAccordionChange("school")}
+        sx={{ mb: 2, backgroundColor: "#f8f9fa" }}
+      >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography
+            variant="h5"
+            sx={{ color: "#2c3e50", fontWeight: "bold" }}
+          >
+            전공 과목 예습하기
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {Object.entries(schoolCoursesByGrade)
+            .sort(([gradeA], [gradeB]) => Number(gradeA) - Number(gradeB))
+            .map(([grade, gradeSpecificCourses]) => (
+              <Accordion
+                key={grade}
+                expanded={gradeExpanded === grade}
+                onChange={handleGradeAccordionChange(grade)}
+                sx={{
+                  mb: 2,
+                  "&:before": { display: "none" },
+                  boxShadow: "none",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  sx={{
+                    backgroundColor: "rgba(0, 0, 0, 0.03)",
+                    borderRadius: 1,
+                    "&.Mui-expanded": {
+                      borderBottomLeftRadius: 0,
+                      borderBottomRightRadius: 0,
+                    },
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "#1976d2", fontWeight: "medium" }}
+                  >
+                    {grade}학년 강의 ({gradeSpecificCourses.length}개)
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ pt: 3 }}>
+                  <CoursesList
+                    courses={gradeSpecificCourses}
+                    title={`${grade}학년 강의 목록`}
+                  />
+                </AccordionDetails>
+              </Accordion>
+            ))}
+        </AccordionDetails>
+      </Accordion>
+
+      {/* 일반 프로그래밍 강의 아코디언 */}
+      {generalCourses.length > 0 && (
+        <Accordion
+          expanded={mainExpanded === "general"}
+          onChange={handleMainAccordionChange("general")}
+          sx={{ backgroundColor: "#fff8f1" }}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography
+              variant="h5"
+              sx={{ color: "#2c3e50", fontWeight: "bold" }}
+            >
+              개발 공부하기 ({generalCourses.length}개)
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <CoursesList courses={generalCourses} title="프로그래밍" />
+          </AccordionDetails>
+        </Accordion>
+      )}
     </Container>
   );
 }
