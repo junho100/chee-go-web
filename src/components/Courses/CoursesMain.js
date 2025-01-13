@@ -18,8 +18,14 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function CoursesMain() {
   const [courses, setCourses] = useState([]);
-  const [mainExpanded, setMainExpanded] = useState("school");
-  const [gradeExpanded, setGradeExpanded] = useState(false);
+  const [mainExpanded, setMainExpanded] = useState(() => {
+    const saved = localStorage.getItem("coursesMainExpanded");
+    return saved || "school";
+  });
+  const [gradeExpanded, setGradeExpanded] = useState(() => {
+    const saved = localStorage.getItem("coursesGradeExpanded");
+    return saved ? saved : false;
+  });
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -165,12 +171,23 @@ function CoursesMain() {
   );
 
   const handleMainAccordionChange = (panel) => (event, isExpanded) => {
-    setMainExpanded(isExpanded ? panel : false);
+    const newState = isExpanded ? panel : false;
+    setMainExpanded(newState);
+    localStorage.setItem("coursesMainExpanded", newState);
   };
 
   const handleGradeAccordionChange = (grade) => (event, isExpanded) => {
-    setGradeExpanded(isExpanded ? grade : false);
+    const newState = isExpanded ? grade : false;
+    setGradeExpanded(newState);
+    localStorage.setItem("coursesGradeExpanded", newState);
   };
+
+  useEffect(() => {
+    return () => {
+      localStorage.setItem("coursesMainExpanded", mainExpanded);
+      localStorage.setItem("coursesGradeExpanded", gradeExpanded);
+    };
+  }, [mainExpanded, gradeExpanded]);
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
